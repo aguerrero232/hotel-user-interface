@@ -1,0 +1,89 @@
+<div class="oneBigBoy">
+
+  <div class="card bg-dark">
+    <div class="card-header">
+      <h5>List your property!</h5>
+    </div>
+    <form #myform="ngForm" (ngSubmit)="validateFormInputs(myform)">
+
+      <div class="form-control">
+        <label for="name">Hotel Name</label>
+        <br>
+        <input id="hotel-name" name="name" name="name" required ngModel>
+      </div>
+      <div class="form-control">
+        <label for="numroomt">Total Number of rooms</label>
+        <br>
+        <input type="number" id="numroomt" name="numroomt" min="1" required ngModel>
+      </div>
+
+      <div class="form-control">
+        <label for="standardp">Standard Price</label>
+        <br>
+        <input type="number" id="standardp" name="standardp" min="1" required ngModel>
+      </div>
+
+      <div class="form-control">
+        <label for="standardq">Standard Rooms</label>
+        <br>
+        <input type="number" id="standardq" name="standardq" min="1" required ngModel>
+      </div>
+
+      <div class="form-control">
+        <label for="queenp">Queen Price</label>
+        <br>
+        <input type="number" id="queenp" name="queenp" min="0" required ngModel>
+      </div>
+
+      <div class="form-control">
+        <label for="queenq">Queen Rooms</label>
+        <br>
+        <input type="number" id="queenq" name="queenq" min="0" required ngModel>
+      </div>
+
+      <div class="form-control">
+        <label for="kingp">King Price</label>
+        <br>
+        <input type="number" id="kingp" name="kingp" min="0" required ngModel>
+      </div>
+
+      <div class="form-control">
+        <label for="kingq">King Rooms</label>
+        <br>
+        <input type="number" id="kingq" name="kingq" min="0" required ngModel>
+      </div>
+
+      <div class="form-control">
+        <label for="weekenddiff">Weekend Differential</label>
+        <br>
+        <input type="number" id="weekenddiff" name="weekenddiff" min="0" required ngModel>
+      </div>
+
+      <div class="form-control" id="amen">
+        <label>Amenities</label>
+        <br>
+
+        <label for="Gym">Gym</label>
+        <input type="checkbox" value="Gym" name='Gym' id='Gym' class="form-check-input" ngModel />
+
+        <label for="Spa">Spa</label>
+        <input type="checkbox" value="Spa" name='Spa' id='Spa' class="form-check-input" ngModel />
+
+        <label for="Pool">Pool</label>
+        <input type="checkbox" value="Pool" name='Pool' id='Pool' class="form-check-input" ngModel />
+
+        <label for="business office">Business Office</label>
+        <input type="checkbox" value="Business Office" name='Business Office' id='Business Office'
+          class="form-check-input" ngModel />
+
+        <label for="WiFi">Wifi</label>
+        <input type="checkbox" value="WiFi" name='WiFi' id='WiFi' class="form-check-input" ngModel />
+      </div>
+
+      <div style="text-align: right;">
+        <button class="btn btn-secondary" type="submit" style="align-content: end;">List Property</button>
+      </div>
+
+    </form>
+  </div>
+</div>

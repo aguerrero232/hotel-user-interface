@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "public": "dist/hotel-user-interface",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "dist/hotel-user-interface/index.html"
+      }
+    ]
+  }
+}

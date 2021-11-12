@@ -1,0 +1,156 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark " aria-label="navbar">
+
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink='/' href="#">GRANDHotels</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navtoggler"
+      aria-controls="navtoggler" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navtoggler">
+
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink='/'>Home</a>
+        </li>
+        <div *ngIf="user === undefined; else elseBlock3">
+
+        </div>
+
+        <ng-template #elseBlock3>
+          <div *ngIf="user.isAdmin === 1; else elseBlock4">
+            <li class="nav-item">
+              <a class="nav-link" routerLink='/post-listing'>List Your Property</a>
+            </li>
+          </div>
+          <ng-template #elseBlock4>
+            <li class="nav-item">
+              <a class="nav-link" (click)="clearHotel()" routerLink='/reservation-form'>Make a reservation</a>
+            </li>
+          </ng-template>
+        </ng-template>
+
+      </ul>
+
+      <div class="btn-group">
+
+        <div *ngIf="user === undefined; else elseBlock">
+          <a routerLink='/sign-in'>
+            <svg xmlns=" http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-person-circle"
+              viewBox="0 0 16 16" style="margin-top: 17px; margin-right: 8px;">
+              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+              <path fill-rule="evenodd"
+                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+            </svg>
+          </a>
+        </div>
+
+        <ng-template #elseBlock>
+          <p style='margin-top: 20px; margin-right: 8px;'> Welcome, {{user.name}}!</p>
+          <a [routerLink]="['/user-information']">
+            <svg xmlns=" http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-person-circle"
+              viewBox="0 0 16 16" style="margin-top: 17px; margin-right: 8px;">
+              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+              <path fill-rule="evenodd"
+                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+            </svg>
+          </a>
+        </ng-template>
+
+        <div *ngIf="isToggled; else elseBlock2">
+          <div class="btn-group" ngbDropdown role="group" display="dynamic" placement="right">
+            <button class="btn btn-primary dropdown-toggle-split" ngbDropdownToggle></button>
+
+            <div class="dropdown-menu bg-dark" ngbDropdownMenu>
+
+              <div id='container'>
+
+                <div *ngIf="user === undefined; else elseBlock1">
+
+                  <a class="dropdown-item" routerLink='/sign-in'>Sign In</a>
+                  <a class="dropdown-item" routerLink='/new-user-page'>Sign Up</a>
+                </div>
+                <ng-template #elseBlock1>
+                  <a class="dropdown-item" [routerLink]="['/user-information']">View Profile</a>
+                  <a class="dropdown-item" [routerLink]="['/']" (click)="signOut()">Sign out</a>
+                </ng-template>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <ng-template #elseBlock2>
+          <div class="btn-group" ngbDropdown role="group" display="dynamic" placement="bottom-right">
+            <button class="btn btn-primary dropdown-toggle-split" ngbDropdownToggle></button>
+
+            <div class="dropdown-menu bg-dark" ngbDropdownMenu>
+
+              <div id='container'>
+
+                <div *ngIf="user === undefined; else elseBlock1">
+
+                  <a class="dropdown-item" routerLink='/sign-in'>Sign In</a>
+                  <a class="dropdown-item" routerLink='/new-user-page'>Sign Up</a>
+                </div>
+                <ng-template #elseBlock1>
+                  <a class="dropdown-item" [routerLink]="['/user-information']">View Profile</a>
+                  <a class="dropdown-item" [routerLink]="['/']" (click)="signOut()">Sign out</a>
+                </ng-template>
+
+              </div>
+            </div>
+
+          </div>
+        </ng-template>
+
+      </div>
+
+    </div>
+  </div>
+</nav>
+
+<!-- <div *ngIf="user === undefined; else elseBlock">
+
+        <a routerLink='/sign-in'>
+          <svg xmlns=" http://www.w3.org/2000/svg" width="39" height="39" fill="white" class="bi bi-person-circle"
+            viewBox="0 0 16 16" style="padding-right: 10px;">
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+            <path fill-rule="evenodd"
+              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+          </svg>
+        </a>
+      </div>
+      <ng-template #elseBlock>
+        <p style='margin: 10px;'> Welcome, {{user.name}}!</p>
+        <a [routerLink]="['/user-information']">
+          <svg xmlns=" http://www.w3.org/2000/svg" width="39" height="39" fill="white" class="bi bi-person-circle"
+            viewBox="0 0 16 16" style="padding-right: 10px;">
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+            <path fill-rule="evenodd"
+              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+          </svg>
+        </a>
+      </ng-template>
+    </div> -->
+
+<!-- sign in Modal -->
+<!-- <div class="modal fade" id="signInModal" aria-labelledby="signInModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <app-sign-in></app-sign-in>
+
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
+      </div>
+    </div>
+  </div>
+</div> -->

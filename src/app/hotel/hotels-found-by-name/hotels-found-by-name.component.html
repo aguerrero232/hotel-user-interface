@@ -1,0 +1,115 @@
+  <div class="oneBigBoi">
+    <div *ngIf="hotelsFound.length ==0; else elseBlock0">
+      <div class="card bg-dark" style="margin-top: 50px; padding: 20px;">
+        <h3>No Hotels found!</h3>
+      </div>
+    </div>
+    <ng-template #elseBlock0>
+
+      <div class="grid-container">
+        <div *ngFor="let hotel of hotelsFound">
+          <div class="card bg-dark">
+            <!-- lazy me.... adding the pics -->
+            <span *ngIf="hotel.picture === 0; else elseBlock">
+              <img src="../../../assets/img/hotelpic.jpg" class="card-img" alt="">
+            </span>
+            <ng-template #elseBlock>
+              <span *ngIf="hotel.picture === 1; else elseBlock2">
+                <img src="../../../assets/img/hotelpic2.jpg" class="card-img" alt="">
+              </span>
+              <ng-template #elseBlock2>
+                <img src="../../../assets/img/hotelpic3.jpg" class="card-img" alt="">
+              </ng-template>
+            </ng-template>
+
+            <div class="card-body">
+              <h3>{{ hotel.name }}</h3>
+              <ul>
+                <li>{{hotel.numRooms}} Rooms</li>
+                <ul>
+                  <li>
+                    <div *ngFor="let room of hotel.rooms;">
+                      <span *ngIf="room.numRoomsAvailable > 0">
+                  <li>{{room.name}}</li>
+                  <ul>
+                    <li>{{room.numRoomsAvailable}} Available</li>
+                    <li>${{room.price}}</li>
+                  </ul>
+                  </span>
+            </div>
+            </li>
+            </ul>
+            <div *ngIf="hotel.amenities.length>0">
+              <li>Amenities</li>
+            </div>
+            <!--li-->
+            <ul *ngFor="let amen of hotel.amenities">
+              <div>
+                <div *ngIf="amen.length>0">
+
+                  <li>{{amen}}</li>
+                </div>
+              </div>
+            </ul>
+            </ul>
+          </div>
+          <div class="d-flex justify-content-between align-items-center" style="margin: 5px;">
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm" (click)="openViewHotel(content, hotel)">View</button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+  </div>
+  </ng-template>
+  </div>
+  <ng-template #content let-modal>
+    <div class="modal-body" style="background-color:rgb(59, 46, 139);">
+      <div class="card bg-dark" id="modal-card">
+        <span *ngIf="hotel.picture === 0; else elseBlock">
+          <img src="../../../assets/img/hotelpic.jpg" class="card-img" alt="">
+        </span>
+        <ng-template #elseBlock>
+          <span *ngIf="hotel.picture === 1; else elseBlock2">
+            <img src="../../../assets/img/hotelpic2.jpg" class="card-img" alt="">
+          </span>
+          <ng-template #elseBlock2>
+            <img src="../../../assets/img/hotelpic3.jpg" class="card-img" alt="">
+          </ng-template>
+        </ng-template>
+        <div class="card-body">
+          <h3>{{ hotel.name }}</h3>
+          <ul>
+            <li>{{hotel.numRooms}} Rooms</li>
+            <ul>
+              <li>
+                <div *ngFor="let room of hotel.rooms;">
+                  <span *ngIf=" room.numRoomsAvailable > 0">
+              <li>{{room.name}}</li>
+              <ul>
+                <li>{{room.numRoomsAvailable}} Available</li>
+                <li>${{room.price}}</li>
+              </ul>
+              </span>
+        </div>
+        </li>
+        </ul>
+        <li>Amenities
+          <ul *ngFor="let amen of hotel.amenities">
+            <li>{{amen}}</li>
+          </ul>
+        </li>
+        </ul>
+      </div>
+    </div>
+    </div>
+    <div class="modal-footer bg-dark" style='padding: 0px;'>
+      <div *ngIf="user=== undefined || user.isAdmin === 0;">
+        <button type="button" class="btn" (click)="reserveSelectedHotel()">Reserve</button>
+      </div>
+      <button type="button" class="btn" (click)="modal.close('Close click')">Close</button>
+    </div>
+
+  </ng-template>

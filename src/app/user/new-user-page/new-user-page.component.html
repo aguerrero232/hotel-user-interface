@@ -1,0 +1,39 @@
+<div class="oneBigBoy">
+
+  <div class="card bg-dark">
+    <div class="card-header">
+      <h5>Sign up for your Account on GRANDHotels.com</h5>
+    </div>
+    <form #myform="ngForm" (ngSubmit)="validateFormInputs(myform)">
+
+      <div class="form-control">
+        <label for='email'>Email </label>
+        <br>
+        <input type='email' id="email" name='email' ngModel required>
+      </div>
+
+      <div class="form-control">
+        <label for='name'>Name </label>
+        <br>
+        <input type='name' id="name" name='name' ngModel required>
+      </div>
+
+      <div class="form-control">
+        <label for="password">Password</label>
+        <br>
+        <input type="password" id="password" name="password" ngModel required>
+      </div>
+
+      <div class="form-control">
+        <label for="password">Confirm Password</label>
+        <br>
+        <input type="password" id="c_password" name="c_password" ngModel required>
+      </div>
+
+      <div style="text-align: right; padding-top: 10px;">
+        <button class="btn btn-secondary" type="submit" style="align-content: end;">Sign Up!</button>
+      </div>
+
+    </form>
+  </div>
+</div>

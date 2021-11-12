@@ -1,0 +1,12 @@
+.card.bg-dark {
+  width: 360px;
+  margin: auto;
+}
+
+.form-control>input {
+  width: fit-content;
+}
+
+p {
+  padding-left: 15px;
+}

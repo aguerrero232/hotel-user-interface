@@ -1,0 +1,296 @@
+<div class="oneBigBoy">
+
+  <div class='card bg-dark' id='usrpage'>
+    <!-- checks if user is logged in or not, if they are go to elseBlock1 -->
+    <div *ngIf="user === undefined; else elseBlock1">
+      <p>No user logged in, sign in <a routerLink='/sign-in'>here</a> </p>
+    </div>
+
+    <!-- user is logged in -->
+    <ng-template #elseBlock1>
+      <div>
+        <p>
+          {{user.name}}
+          <br>
+
+          {{user.email}}
+        </p>
+      </div>
+
+      <a class="nav-link" (click)="openResetPassword(content)">Reset Password</a>
+      <a class="nav-link" (click)="openUpdateEmail(content1)">Update email</a>
+      <span *ngIf="user.isAdmin == 1">
+        <a class="nav-link" (click)="openupdateToAdmin(content2)">Give Admin</a>
+      </span>
+    </ng-template>
+
+  </div>
+
+  <div *ngIf="user === undefined; else elseBlock0">
+
+  </div>
+  <!-- elseBlock 0  user is definied here -->
+  <ng-template #elseBlock0>
+    <!-- checking if the user is an admin, if they are get sent to elseBlock4 -->
+    <div *ngIf="user.isAdmin === 0; else elseBlock4">
+      <!-- regular user account -->
+      <!-- checking length of users reservations, if > 0 go to elseBlock2 -->
+      <div *ngIf="user.reservationIds.length === 0; else elseBlock2">
+        <!-- go here if no reservations are made-->
+        <div class='card bg-dark' id='usrpage'>
+          <p>No Reservations</p>
+        </div>
+      </div>
+      <!-- user has made reservations -->
+      <ng-template #elseBlock2>
+        <!-- load of the reservations -->
+        <div *ngIf="getReservations()"></div>
+
+        <div class='card bg-dark' id='usrpage'>
+          <p>Current Reservations</p>
+          <table class="table table-striped table-dark">
+            <thead>
+              <tr>
+                <th scope="col">Hotel</th>
+                <th scope="col">Room</th>
+                <th scope="col">Price</th>
+                <th scope="col">Start</th>
+                <th scope="col">End</th>
+                <th scope="col">Update</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let res_data of user_reservations">
+                <th scope="row">{{res_data.hotel.name}} </th>
+                <td>{{res_data.res.room.name}}</td>
+                <td>{{res_data.res.price}}</td>
+                <td>{{res_data.res.start}}</td>
+                <td>{{res_data.res.end}}</td>
+                <td> <button class='btn' (click)="openUpdateRes(content3, res_data)">x</button> </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </ng-template>
+
+    </div>
+
+    <!-- else block 4 user is an admin -->
+    <ng-template #elseBlock4>
+
+      <!-- used to display admins hotels -->
+      <div class="card-body" id="viewHotels">
+        <app-admin-hotels-view></app-admin-hotels-view>
+      </div>
+
+    </ng-template>
+
+  </ng-template>
+
+  <!-- reset password modal -->
+  <ng-template #content let-modal>
+
+    <div class="modal-header bg-dark">
+      <h4 class="modal-title text-white">Reset your password.</h4>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+        (click)="modal.close('Close click')"></button>
+    </div>
+
+    <div class=" modal-body" style="background-color: rgb(89, 43, 195);">
+
+      <div class="card bg-dark" id="modal-card">
+
+        <form #myform="ngForm" (ngSubmit)="updatePassword(myform)">
+
+          <div class='form-control'>
+            <label for='email-p'>Email </label>
+            <br>
+            <input type='email' id="email-p" name='email' ngModel required>
+          </div>
+
+          <div class='form-control'>
+            <label for="password-p">Password</label>
+            <br>
+            <input type="password" id="password" name="password" ngModel required>
+          </div>
+          <div class='form-control'>
+            <label for="newPassword">New Password</label>
+            <br>
+            <input type="password" id="newPassword" name="newPassword" ngModel required>
+          </div>
+
+          <div class='form-control'>
+            <label for="confirmPassword">Confirm New Password</label>
+            <br>
+            <input type="password" id="confirmPassword" name="confirmPassword" ngModel required>
+          </div>
+
+          <div style="text-align: right; padding-top: 10px;">
+            <button class="btn btn-secondary" type="submit" style="align-content: end;">Confirm</button>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+    <div class="modal-footer bg-dark">
+      <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+    </div>
+
+  </ng-template>
+
+  <!-- update email modal -->
+  <ng-template #content1 let-modal>
+    <div class="modal-header bg-dark">
+      <h4 class="modal-title text-white">Update your email.</h4>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+        (click)="modal.close('Close click')"></button>
+    </div>
+    <div class=" modal-body" style="background-color: rgb(89, 43, 195);">
+
+      <div class="card bg-dark" id="modal-card">
+
+        <form #myform="ngForm" (ngSubmit)="updateEmail(myform)">
+
+          <div class='form-control'>
+            <label for='email'>Email </label>
+            <br>
+            <input type='email' id="email" name='email' ngModel required>
+          </div>
+
+          <div class='form-control'>
+            <label for="password">Password</label>
+            <br>
+            <input type="password" id="password" name="password" ngModel required>
+          </div>
+
+          <div class='form-control'>
+            <label for="newEmail">New Email</label>
+            <br>
+            <input type=" email" id="newEmail" name="newEmail" ngModel required>
+          </div>
+
+          <div style="text-align: right; padding-top: 10px;">
+            <button class="btn btn-secondary" type="submit" style="align-content: end;">Confirm</button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+    <!-- -->
+    <div class="modal-footer bg-dark">
+
+      <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
+
+  <!-- give admin modal -->
+  <ng-template #content2 let-modal>
+    <div class="modal-header bg-dark">
+      <h4 class="modal-title text-white">Grant administrative privileges to a user.</h4>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+        (click)="modal.close('Close click')"></button>
+    </div>
+    <div class=" modal-body" style="background-color: rgb(89, 43, 195);">
+
+      <div class="card bg-dark" id="modal-card">
+
+        <form #myform="ngForm" (ngSubmit)="updateToAdmin(myform)">
+
+          <div class='form-control'>
+            <label for='email'>User Email</label>
+            <br>
+            <input type='email' id="email" name='email' ngModel required>
+          </div>
+
+          <div class='form-control'>
+            <label for="password">User Password</label>
+            <br>
+            <input type="password" id="password" name="password" ngModel required>
+          </div>
+
+          <div style="text-align: right; padding-top: 10px;">
+            <button class="btn btn-secondary" type="submit" style="align-content: end;">Confirm</button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+    <!-- -->
+    <div class="modal-footer bg-dark">
+
+      <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
+
+  <!-- update reservation modal -->
+  <ng-template #content3 let-modal>
+
+    <div class="modal-header bg-dark">
+      <h4 class="modal-title text-white">Update Reservation.</h4>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+        (click)="modal.close('Close click')"></button>
+    </div>
+
+    <div class=" modal-body" style="background-color: rgb(89, 43, 195);">
+
+      <div class="card bg-dark" id="modal-card">
+
+        <form #myform="ngForm" (ngSubmit)="onSubmitUpdateRes(myform)">
+
+          <div class="form-control">
+            <label for="room" class="form-label" onmousedown="return false" onselectstart="return false">Room</label>
+            <br>
+            <span *ngFor="let room of selected_res.hotel.rooms">
+              <span *ngIf="room.price != -1 && room.numRoomsAvailable > 0">
+                <label onmousedown="return false" onselectstart="return false">{{room.name}}</label>
+                <input type="radio" name="room" value="{{room.name}}" class="form-check-input" ngModel />
+              </span>
+            </span>
+
+          </div>
+
+          <!-- start date picker -->
+          <div class="form-control">
+            <label class="form-label" onmousedown="return false" onselectstart="return false">Booking Dates</label>
+            <br>
+            <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker"
+              [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t"
+              outsideDays="hidden" [startDate]="fromDate!" tabindex="-1" type="hidden">
+            <ng-template #t let-date let-focused="focused">
+              <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+                (mouseleave)="hoveredDate = null">
+
+                {{ date.day }}
+
+              </span>
+            </ng-template>
+            <input #dpFromDate id="dateIn" placeholder="start date" name="dpFromDate"
+              [value]="formatter.format(fromDate)" (input)="fromDate = validateInput(fromDate, dpFromDate.value)"
+              size="5" (click)="datepicker.toggle()">
+            <input #dpToDate id="dateIn" placeholder="end date" name="dpToDate" [value]="formatter.format(toDate)"
+              (input)="toDate = validateInput(toDate, dpToDate.value)" (click)="datepicker.toggle()">
+          </div>
+          <!-- end date picker -->
+
+          <div style="text-align: right; padding-top: 10px;">
+            <button class="btn btn-secondary" type="submit" style="align-content: end;">Update</button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+
+    <div class="modal-footer bg-dark">
+      <button type="button" class="btn btn-secondary" (click)="delete_res()">Cancel</button>
+      <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+    </div>
+
+  </ng-template>

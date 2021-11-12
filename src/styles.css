@@ -1,0 +1,128 @@
+/* You can add global styles to this file, and also import other style files */
+button,
+.btn {
+  background-color: rgb(89, 43, 195);
+  color: white;
+  outline: white;
+  border-color: white;
+  margin: 10px;
+
+}
+
+.btn:hover {
+  background-color: rgb(129, 85, 230);
+  color: white;
+  border-color: rgb(106, 90, 205);
+}
+
+.btn:focus {
+  box-shadow: none !important;
+}
+
+input[type=range] {
+  width: 70%;
+}
+
+input[type=range]::-webkit-slider-thumb,
+input[type=range]::-webkit-slider-thumb:focus {
+  background-color: rgb(110, 69, 207);
+  border: 1px solid white;
+  box-shadow: none !important;
+}
+
+input[type=checkbox],
+input[type=radio] {
+  margin-right: 10px;
+  margin-left: 5px;
+  display: inline-block;
+  vertical-align: -4%
+}
+
+input[type='checkbox']:focus,
+input[type=radio] {
+  border-color: rgb(110, 69, 207);
+  box-shadow: none !important;
+}
+
+input[type='checkbox']:checked,
+input[type=radio]:checked {
+  background-color: rgb(110, 69, 207);
+  border-color: rgb(129, 85, 230);
+  color: white;
+  box-shadow: none !important;
+}
+
+.card-header {
+  background-image: url("./assets/img/bg-img-1.gif");
+  border: 1px solid white;
+  color: white;
+  text-align: center;
+}
+
+.img-fluid {
+  max-width: 65%;
+  height: auto;
+}
+
+body {
+  background-color: rgb(89, 43, 195);
+}
+
+.form-control {
+  background-image: url("./assets/img/bg-img-1.gif");
+  color: white;
+  width: 295px;
+  margin: 15px;
+}
+
+.card.bg-dark {
+  border: 1px solid white;
+  /* min-width: 340px; */
+}
+
+form>div>.btn {
+  /* background-color: rgb(94, 76, 209); */
+  background-image: url("./assets/img/bg-img-1.gif");
+}
+
+form>div>.btn:hover {
+  /* background-color: rgb(94, 76, 209); */
+  background-image: url("./assets/img/bg-img-2.gif");
+}
+
+label {
+  color: white;
+
+}
+
+h3 {
+  color: whitesmoke;
+  font-size: 70px;
+}
+
+.oneBigBoy {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+a,
+a.nav-link {
+  color: rgb(110, 69, 207);
+  text-decoration: none;
+}
+
+a:hover,
+a.nav-link:hover {
+  color: rgb(129, 85, 230);
+  cursor: pointer;
+}
+
+.grid-container {
+  height: 100%;
+  margin-top: 10px;
+  padding: 5px 5x;
+  display: grid;
+  grid-gap: 20px;
+  grid-template-rows: repeat(auto-fill, minmax(300px,1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px ,1fr));
+}

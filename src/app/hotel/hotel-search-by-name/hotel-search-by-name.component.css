@@ -1,0 +1,18 @@
+.form-control {
+  margin: auto;
+  width: 90%;
+  max-width: 700px;
+  text-align: center;
+}
+
+input[type='text']{
+  color: #fff;
+}
+
+input::placeholder {
+  color: #fff;
+}
+
+p {
+  padding-left: 15px;
+}

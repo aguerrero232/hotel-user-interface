@@ -1,0 +1,174 @@
+<!-- Header --->
+<header class='page-header py-5'>
+  <h3 class="text-center" onmousedown="return false" onselectstart="return false">Find your match!</h3>
+
+  <div class='card bg-dark' id="searchForm">
+    <form #myform="ngForm" (ngSubmit)="onSubmit(myform)">
+  
+      <div class="form-control">
+      <label for="priceRange" class="form-label" onmousedown="return false" onselectstart="return false">Nightly
+        Price: ${{priceRange}}</label>
+      <br>
+  
+      <input [(ngModel)]="priceRange" class="form-range" name="priceRange" id="priceRange" type="range" min="0"
+        max="300" step="5" start="10">
+      </div>
+  
+      <div class="form-control">    
+      <label for="amenities" class="form-label" onmousedown="return false" onselectstart="return false">Amenities</label>
+      <br>
+        
+      <label for="gym">Gym</label>
+      <input type="checkbox" value="Gym" name='Gym' id='Gym' class="form-check-input" ngModel />
+  
+      <label for="spa">Spa</label>
+      <input type="checkbox" value="Spa" name='Spa' id='Spa' class="form-check-input" ngModel />
+      
+      <label for="pool">Pool</label>
+      <input type="checkbox" value="Pool" name='Pool' id='Pool' class="form-check-input" ngModel />
+      
+      <br>
+      
+      <label for="business office">Business Office</label>
+      <input type="checkbox" value="Business Office" name='Business Office' id='Business Office' class="form-check-input" ngModel />
+      
+      <label for="wifi">Wifi</label>
+      <input type="checkbox" value="WiFi" name='WiFi' id='WiFi' class="form-check-input" ngModel />
+      </div>
+  
+      <div style="text-align: right; padding-top: 10px;">
+        <button class="btn btn-secondary" type="submit" style="align-content: end;">Submit</button>
+      </div>
+  
+    </form>
+  </div>
+</header>
+
+<br>
+
+<div class="oneBigBoi">
+  <div class="grid-container">
+
+    <div *ngFor="let hotel of finalCriteria">
+      <div class="card bg-dark" id="hotelCard">
+
+        <span *ngIf="hotel.picture === 0; else elseBlock">
+          <img src="../../../assets/img/hotelpic.jpg" class="card-img" alt="">
+        </span>
+        <ng-template #elseBlock>
+          <span *ngIf="hotel.picture === 1; else elseBlock2">
+            <img src="../../../assets/img/hotelpic2.jpg" class="card-img" alt="">
+          </span>
+          <ng-template #elseBlock2>
+            <img src="../../../assets/img/hotelpic3.jpg" class="card-img" alt="">
+          </ng-template>
+        </ng-template>
+
+        <div class="card-body">
+          <h3>{{ hotel.name }}</h3>
+          <ul>
+            <li>test</li>
+            <li>{{hotel.numRooms}} Rooms</li>
+            <ul>
+              <li>
+                <div *ngFor="let room of hotel.rooms;">
+                  <span *ngIf="room.numRoomsAvailable > 0">
+              <li>{{room.name}}</li>
+              <ul>
+                <li>{{room.numRoomsAvailable}} Available</li>
+                <li>${{room.price}}</li>
+              </ul>
+              </span>
+        </div>
+        </li>
+        </ul>
+        <div *ngIf="hotel.amenities.length>0">
+          <li>Amenities</li>
+        </div>
+        <!--li-->
+        <ul *ngFor="let amen of hotel.amenities">
+          <div>
+            <div *ngIf="amen.length>0">
+
+              <li>{{amen}}</li>
+            </div>
+          </div>
+        </ul>
+        </ul>
+
+      </div>
+      <div class="d-flex justify-content-between align-items-center" style="margin: 5px;">
+        <div class="btn-group">
+          <button type="button" class="btn btn-sm" (click)="openViewHotel(content, hotel)">View</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+</div>
+
+
+
+<ng-template #content let-modal>
+  <div class="modal-body" style="background-color:rgb(59, 46, 139);">
+
+    <div class="card bg-dark" id="modal-card">
+      <span *ngIf="hotel.picture === 0; else elseBlock">
+        <img src="../../../assets/img/hotelpic.jpg" class="card-img" alt="">
+      </span>
+      <ng-template #elseBlock>
+        <span *ngIf="hotel.picture === 1; else elseBlock2">
+          <img src="../../../assets/img/hotelpic2.jpg" class="card-img" alt="">
+        </span>
+        <ng-template #elseBlock2>
+          <img src="../../../assets/img/hotelpic3.jpg" class="card-img" alt="">
+        </ng-template>
+      </ng-template>
+
+      <div class="card-body">
+
+        <h3>{{ hotel.name }}</h3>
+        <ul>
+          <li>{{hotel.numRooms}} Rooms</li>
+          <ul>
+            <li>
+              <div *ngFor="let room of hotel.rooms;">
+                <span *ngIf=" room.numRoomsAvailable > 0">
+            <li>{{room.name}}</li>
+            <ul>
+              <li>{{room.numRoomsAvailable}} Available</li>
+              <li>${{room.price}}</li>
+            </ul>
+            </span>
+      </div>
+      </li>
+      </ul>
+      <div *ngIf="hotel.amenities.length>0">
+        <li>Amenities</li>
+      </div>
+      <!--li-->
+      <ul *ngFor="let amen of hotel.amenities">
+        <div>
+          <div *ngIf="amen.length>0">
+
+            <li>{{amen}}</li>
+          </div>
+        </div>
+      </ul>
+      </ul>
+
+    </div>
+  </div>
+
+  </div>
+
+  <div class="modal-footer bg-dark" style='padding: 0px;'>
+    <div *ngIf="user=== undefined || user.isAdmin === 0;">
+      <button type="button" class="btn" (click)="reserveSelectedHotel()">Reserve</button>
+    </div>
+    <button type="button" class="btn" (click)="modal.close('Close click')">Close</button>
+  </div>
+
+</ng-template>
