@@ -36,15 +36,6 @@ button.calendar:active {
   margin-top: 50px;
 }
 
-.grid-container {
-  display: grid;
-  grid-template-columns: auto auto auto auto;
-  grid-gap: 15px;
-  margin: auto;
-  padding: 15px;
-  grid-auto-flow: row;
-}
-
 div.card.bg-dark#hotelCard {
   width: 100%;
   height: 100%;
@@ -68,7 +59,7 @@ div.oneBigBoi {
   margin: auto;
 }
 
-input[type='text']{
+input[type='text'] {
   color: #fff;
 }
 
