@@ -97,18 +97,13 @@
       </div>
       </li>
       </ul>
-      <div *ngIf="hotel.amenities.length>0">
+      <div *ngIf="hotel.amenities.length > 0">
         <li>Amenities</li>
+        <!--li-->
+        <ul *ngFor="let amen of hotel.amenities">
+          <li>{{amen}}</li>
+        </ul>
       </div>
-      <!--li-->
-      <ul *ngFor="let amen of hotel.amenities">
-        <div>
-          <div *ngIf="amen.length>0">
-
-            <li>{{amen}}</li>
-          </div>
-        </div>
-      </ul>
       </ul>
 
     </div>

@@ -4,7 +4,7 @@
 
     <div class="card bg-dark">
       <div class="card-header">
-        <h3>{{hotel.name}}</h3>
+        <h3>Complete your Reservation</h3>
       </div>
 
       <form #myform="ngForm" (ngSubmit)="onSubmit(myform)">
@@ -53,7 +53,10 @@
     </div>
   </div>
 
-  <div class="card bg-dark" style='padding: 30px; margin-bottom: 40px;'>
+  <div class="card bg-dark" id="hotelCard">
+    <div class='card-header'>
+      <h3>{{ hotel.name }}</h3>
+    </div>
     <span *ngIf="hotel.picture === 0; else elseBlock">
       <img src="../../../assets/img/hotelpic.jpg" class="card-img" alt="">
     </span>
@@ -66,28 +69,32 @@
       </ng-template>
     </ng-template>
 
+    <div class="card-body">
+      <ul>
+        <li>{{hotel.numRooms}} Rooms</li>
+        <ul>
+          <li>
+            <div *ngFor="let room of hotel.rooms;">
+              <span *ngIf="room.numRoomsAvailable > 0">
+          <li>{{room.name}}</li>
+          <ul>
+            <li>{{room.numRoomsAvailable}} Available</li>
+            <li>${{room.price}}</li>
+          </ul>
+          </span>
+    </div>
+    </li>
+    </ul>
+    <div *ngIf="hotel.amenities.length > 0">
+      <li>Amenities</li>
+      <!--li-->
+      <ul *ngFor="let amen of hotel.amenities">
+        <li>{{amen}}</li>
+      </ul>
+    </div>
+    </ul>
   </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</div>
 
 
 

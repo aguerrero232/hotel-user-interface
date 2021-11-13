@@ -145,28 +145,61 @@ export class UserInformationComponent implements OnInit {
     }); 
   }
 
-  updateToAdmin(form: NgForm){
+ updateToAdmin(form: NgForm) {
     this.users = this.userService.getUsers();
-    
+
     let password = form.value.password;
     let email = form.value.email;
-    let u_user = this.users.find(u =>  u["email"] === email); 
-    
-    if(u_user){
-      if( this.hashService.get(u_user.password) === password){
+    let u_user = this.users.find(u => u["email"] === email);
+    let res: Reservation[] = [];
+    let htl: Hotel[] = [];
+
+    if (u_user) {
+      if (this.hashService.get(u_user.password) === password) {
         u_user.isAdmin = 1;
+        for (let i = 0; i < this.user.reservationIds.length; i++) {
+          let c_id = this.user.reservationIds[i];
+          let r = res.find(r => r.id == c_id);
+          if (r) {
+            let h = htl.find(h => h.id == r!._hotelId);
+            if (h) {
+
+              switch (r.room.name) {
+                case 'Standard':
+                  h.rooms[0].numRoomsAvailable += 1;
+                  break;
+
+                case 'Queen':
+                  h.rooms[1].numRoomsAvailable += 1;
+                  break;
+
+                case 'King':
+                  h.rooms[2].numRoomsAvailable += 1;
+                  break;
+
+                default:
+                  console.log("Invalid hotel room");
+                  break;
+              }
+              this.hotelService.updateHotel(h);
+            }
+          }
+        }
+        this.hotelService.setHotels();
         this.userService.updateUser(u_user);
         this.userService.setUsers();
         this.modalService.dismissAll();
+        return;
       }
-      else{
+      else {
         alert("Incorrect password!");
+        return;
       }
     }
-    else{
+    else {
       alert("Couldnt find " + email + "!");
+      return;
     }
-
   }
 
   updatePassword(form: NgForm){    

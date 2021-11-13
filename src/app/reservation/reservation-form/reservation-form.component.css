@@ -8,6 +8,10 @@ button.calendar:active {
   background-position: center;
 }
 
+div.modal-body {
+  color: white;
+}
+
 .custom-day {
   text-align: center;
   padding: 0.185rem 0.25rem;
