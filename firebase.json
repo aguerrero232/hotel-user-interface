@@ -1,6 +1,10 @@
 {
   "hosting": {
     "public": "dist/hotel-user-interface",
+    "rewrites": [{
+      "source": "**",
+      "destination": "/index.html"
+    }],
     "ignore": [
       "firebase.json",
       "**/.*",
