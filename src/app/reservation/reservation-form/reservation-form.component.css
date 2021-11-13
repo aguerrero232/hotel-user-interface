@@ -31,7 +31,7 @@ button.calendar:active {
 }
 
 .card.bg-dark#searchForm {
-  width: 65%;
+  max-width: 630px;
   margin: auto;
   margin-top: 50px;
 }
@@ -55,16 +55,10 @@ h3 {
 }
 
 div.oneBigBoi {
-  width: 99%;
+  width: 97%;
   margin: auto;
 }
 
 input[type='text'] {
   color: #fff;
-}
-
-header {
-  background-image: url('../../../assets/img/masthead-pic1.jpg');
-  background-size: cover;
-  width: 100%;
 }

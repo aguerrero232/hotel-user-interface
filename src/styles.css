@@ -64,10 +64,6 @@ input[type=radio]:checked {
   height: auto;
 }
 
-body {
-  background-color: rgb(89, 43, 195);
-}
-
 .form-control {
   background-image: url("./assets/img/bg-img-1.gif");
   color: white;
@@ -123,6 +119,31 @@ a.nav-link:hover {
   padding: 5px 5x;
   display: grid;
   grid-gap: 20px;
-  grid-template-rows: repeat(auto-fill, minmax(300px,1fr));
-  grid-template-columns: repeat(auto-fill, minmax(350px ,1fr));
+  grid-template-rows: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+}
+
+header {
+  background-image: url('./assets/img/masthead-pic1.jpg');
+  background-size: cover;
+  width: 100%;
+}
+
+header>h3>a.nav-link {
+  color: white;
+}
+
+header>h3>a:hover {
+  color: rgb(217, 215, 228);
+  cursor: pointer;
+  width: 100%;
+}
+
+body {
+  background-color: rgb(89, 43, 195);
+}
+
+html,
+body {
+  height: 100%;
 }

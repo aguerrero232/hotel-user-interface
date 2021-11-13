@@ -1,0 +1,23 @@
+* {
+  margin: 0;
+}
+
+.page-wrap {
+  min-height: 100%;
+  /* equal to footer height */
+  margin-bottom: -90px;
+}
+
+.page-wrap:after {
+  content: "";
+  display: block;
+}
+
+.py-5.bg-dark,
+.page-wrap:after {
+  height: 90px;
+}
+
+.container {
+  display: inline-block;
+}

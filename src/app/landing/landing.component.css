@@ -1,22 +1,8 @@
-header {
-  background-image: url('../../assets/img/masthead-pic1.jpg');
-  background-size: cover;
-  min-height: 250px;
-  width: 100%;
-}
-
-header>h3>a {
-  color: white;
-}
-
-header>h3>a:hover {
-  color: rgb(217, 215, 228);
-  cursor: pointer;
-  width: 100%;
-}
-
 div.content {
   margin: auto;
   width: 97%;
 }
 
+.testimonials {
+  padding-bottom: 10px;
+}

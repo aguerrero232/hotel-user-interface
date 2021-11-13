@@ -36,7 +36,7 @@ import { AdminHotelsViewComponent } from './hotel/admin-hotels-view/admin-hotels
     PostListingComponent,
     HotelSearchByNameComponent,
     HotelsFoundByNameComponent,
-    AdminHotelsViewComponent  
+    AdminHotelsViewComponent
   ],
   imports: [
     BrowserModule,
