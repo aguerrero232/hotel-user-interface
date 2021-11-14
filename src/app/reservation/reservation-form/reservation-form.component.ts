@@ -75,7 +75,7 @@ export class ReservationFormComponent implements OnInit {
   }
 
   onSubmit(form: NgForm): void {
-   
+    this.hotels = this.hotelService.hotels;
     this.finalCriteria = [];
     
     let wantedAmenities: string[] = [];
@@ -110,11 +110,15 @@ export class ReservationFormComponent implements OnInit {
     let matchedHotels = [];
 
     for(let i = 0; i < htl.length; i++){
-      let c_h_r = htl[i].rooms.filter(h_r => h_r.price <= this.priceRange);
-      if(c_h_r)
-        matchedHotels.push(htl[i]);
+      let c_h_r = htl[i].rooms.filter(h_r => h_r.price <= this.priceRange);    
+      if(c_h_r.length > 0){
+        let zero_min_check = c_h_r.filter(room => room.price != 0);
+        let min_check = zero_min_check.filter(room => room.price <= this.priceRange);
+        if(min_check.length > 0)
+          matchedHotels.push(htl[i]);
+      }
     }
-    
+
     if(matchedHotels.length <= 0){
       alert("No Hotels fit that criteria!")
       return;

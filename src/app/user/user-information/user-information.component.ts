@@ -97,6 +97,7 @@ export class UserInformationComponent implements OnInit {
           c_user_reservations.push({res: r, hotel: h});
       }
     }
+
     this.user_reservations = c_user_reservations;
   }
 
@@ -107,20 +108,17 @@ export class UserInformationComponent implements OnInit {
     // updating the number of the hotel rooms available
     let c_hotel = this.selected_res.hotel;    
     let roomType = 0;
-
+    
     switch (this.selected_res.res.room.name){
       case 'Standard':
         roomType = 0;
         break;
-      
       case 'Queen':
         roomType = 1;
         break;
-      
       case 'King':
         roomType = 2;
         break;
-      
       default:
         roomType = 0;
         break;
@@ -128,16 +126,12 @@ export class UserInformationComponent implements OnInit {
 
     this.user.reservationIds = this.user.reservationIds.filter((s: any) => s != this.selected_res.res.id);
     this.userService.user = this.user;
-
     this.userService.updateUser(this.user);
     this.userService.setUsers();
     this.userService.setUser();
-
     c_hotel.rooms[roomType].numRoomsAvailable += 1;
-
     this.hotelService.updateHotel(c_hotel);
     this.hotelService.setHotels();
-
     this.modalService.dismissAll();
     localStorage.setItem('user', JSON.stringify(this.user)); 
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
@@ -147,14 +141,13 @@ export class UserInformationComponent implements OnInit {
 
  updateToAdmin(form: NgForm) {
     this.users = this.userService.getUsers();
-
-    let password = form.value.password;
-    let email = form.value.email;
-    let u_user = this.users.find(u => u["email"] === email);
     let res: Reservation[] = [];
     let htl: Hotel[] = [];
+    let password = form.value.password;
+    let email = form.value.email;
+    let u_user = this.users.find(u => u.email === email);
 
-    if (u_user) {
+    if (u_user){
       if (this.hashService.get(u_user.password) === password) {
         u_user.isAdmin = 1;
         for (let i = 0; i < this.user.reservationIds.length; i++) {
@@ -204,12 +197,10 @@ export class UserInformationComponent implements OnInit {
 
   updatePassword(form: NgForm){    
     this.users = this.userService.getUsers();
-
     let password = form.value.password;
     let confirmPassword = form.value.confirmPassword;
     let newPassword = form.value.newPassword;
     let email = form.value.email;
-
     if(this.user.email === email){
       if( this.hashService.get(this.user.password) === password){
         if(newPassword === confirmPassword){
@@ -235,7 +226,6 @@ export class UserInformationComponent implements OnInit {
       alert("Email not found!");
       return;
     }
-
   }
  
   updateEmail(form: NgForm){
@@ -266,26 +256,20 @@ export class UserInformationComponent implements OnInit {
   }
 
   async onSubmitUpdateRes(form: NgForm){
-
     let c_hotel = this.selected_res.hotel;
     let c_res = this.selected_res.res;
-
-    let roomName = form.value.room;
     let f_room: any;
-
+    let roomName = form.value.room;
     let day = new Date().getDay();
-
     if(roomName === ""){
       alert("Room type not selected! Please select room type and doube check dates!");
       return;
     }
-
     if(c_res.roomName != roomName){
       for(let i = 0; i < c_hotel.rooms.length; i++){      
         if(c_hotel.rooms[i].name == roomName){
           if(c_hotel.rooms[i].numRoomsAvailable > 0){
             //  updating count of reservations allowed to selected room -1
-
             c_hotel.rooms[i].numRoomsAvailable -= 1;  
             f_room = c_hotel.rooms[i];
           }
@@ -295,7 +279,6 @@ export class UserInformationComponent implements OnInit {
           c_hotel.rooms[i].numRoomsAvailable += 1;  
         }
       }
-
       this.hotelService.updateHotel(c_hotel);
     }
     else{
@@ -317,32 +300,21 @@ export class UserInformationComponent implements OnInit {
           roomType = 0;
           break;
       }
-
       f_room = c_hotel.rooms[roomType];
     }
-
     // error checking weekend diff for 0
     let wd = ( c_hotel.weekendDiff > 0) ? c_hotel.weekendDiff : 0; 
-    
     // setting final price based on day of the week (weekend vs not)
-    let final_price = ( day == 0 || day == 6 ) ? f_room.price * ( (wd > 0) ? wd/100 : 1) :  f_room.price;
-
+    let final_price = ( day == 0 || day == 6 ) ? f_room.price - ( f_room.price * ( (wd > 0) ? wd/100 : 1)) :  f_room.price;
     c_res.room.name = f_room.name;
     c_res.room.price = f_room.price;
-
     c_res.start = (this.fromDate?.month + "/" + this.fromDate?.day + "/" + this.fromDate?.year);
-    c_res.end =  (this.toDate == undefined ) ? (this.fromDate?.month + "/" + this.fromDate?.day + "/" + this.fromDate?.year) : (this.toDate?.month + "/" + this.toDate?.day + "/"+ this.toDate?.year );
-    
+    c_res.end =  (this.toDate == undefined ) ? c_res.start : (this.toDate?.month + "/" + this.toDate?.day + "/"+ this.toDate?.year );
     let daysbooked = (c_res.start == c_res.end) ? 1 : this.dayDiff(new Date(c_res.start), new Date(c_res.end));
-    
-    c_res.price = final_price * daysbooked;
-
+    c_res.price = Number((final_price * daysbooked).toFixed(2));
     c_res = await this.reservationService.updateReservation(c_res);
-
     this.reservationService.setReservations();
-      
     this.modalService.dismissAll();
-
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['user-information']);
     }); 
@@ -379,6 +351,4 @@ export class UserInformationComponent implements OnInit {
     const parsed = this.formatter.parse(input);
     return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
   }
-
-
 }

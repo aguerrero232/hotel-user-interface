@@ -41,7 +41,7 @@ export class HotelsFoundByNameComponent implements OnInit {
 
   openViewHotel(content: any, hotel: Hotel){
     this.hotel = hotel;
-    this.modalService.open(content, { backdropClass: 'light-blue-backdrop'}); 
+    this.modalService.open(content); 
   }
 
   reserveSelectedHotel(){

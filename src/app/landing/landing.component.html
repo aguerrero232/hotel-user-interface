@@ -1,7 +1,9 @@
 <!-- Header --->
 <header class='page-header py-5' style="margin-bottom: 30px;">
-  <h3 class="text-center" onmousedown="return false" onselectstart="return false"><a class="nav-link"
-      routerLink="reservation-form">Book a room today!</a></h3>
+  <div *ngIf="user == undefined || user.isAdmin == 0">
+    <h3 class="text-center" onmousedown="return false" onselectstart="return false"><a class="nav-link"
+        routerLink="reservation-form">Book a room today!</a></h3>
+  </div>
   <app-hotel-search-by-name></app-hotel-search-by-name>
 </header>
 

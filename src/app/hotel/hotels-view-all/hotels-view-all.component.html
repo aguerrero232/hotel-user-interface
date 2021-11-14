@@ -21,6 +21,11 @@
 
         <div class="card-body">
           <h3>{{ hotel.name }}</h3>
+
+          <p *ngIf='hotel.weekendDiff > 0' style='text-align: center;'>
+            Save {{hotel.weekendDiff}}% if you book on the weekend!
+          </p>
+
           <ul>
             <li>{{hotel.numRooms}} Rooms</li>
             <ul>
@@ -49,7 +54,6 @@
           </div>
         </ul>
         </ul>
-
       </div>
       <div class="d-flex justify-content-between align-items-center" style="margin: 5px;">
         <div class="btn-group">

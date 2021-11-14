@@ -44,17 +44,13 @@ export class ReservationCompleteFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
     this.user = this.userService.user;
-    
     if(this.user === undefined)
       this.router.navigate(["/sign-in"]);
-
     if(this.hotelService.hotel != undefined)
       this.hotel = this.hotelService.hotel;
     else
       this.router.navigate(["/"]);
-  
     this.reservation = {id: "", _hotelId: "", _userId: "", room: { name: "", price: 0 }, start: "", end: "", price: 0};
   }
 
@@ -65,17 +61,14 @@ export class ReservationCompleteFormComponent implements OnInit {
   }
 
   async onSubmit(form: NgForm){
-  
     let roomName = form.value.room;
     let f_room: any;
-
     let day = new Date().getDay();
-
     if(roomName === ""){
       alert("Room type not selected! Please select room type and doube check dates!");
       return;
     }
-
+    // should make this into a switch to avoid the loop
     for(let i = 0; i < this.hotel.rooms.length; i++){      
       if(this.hotel.rooms[i].name == roomName){
         if(this.hotel.rooms[i].numRoomsAvailable > 0){
@@ -90,53 +83,35 @@ export class ReservationCompleteFormComponent implements OnInit {
         }
       }
     }
-
     // error checking weekend diff for 0
     let wd = ( this.hotel.weekendDiff > 0) ? this.hotel.weekendDiff : 0; 
-    
     // setting final price based on day of the week (weekend vs not)
-    let final_price = ( day == 0 || day == 6 ) ? f_room.price * ( (wd > 0) ? wd/100 : 1) :  f_room.price;
-
+    let final_price = ( day == 0 || day == 6 ) ? f_room.price - ( f_room.price * ( (wd > 0) ? wd/100 : 1)) :  f_room.price;
     this.reservation._hotelId = this.hotel.id;
     this.reservation._userId = this.user.id;
     this.reservation.room.name = f_room.name;
     this.reservation.room.price = f_room.price;
     this.reservation.start = (this.fromDate?.month + "/" + this.fromDate?.day + "/" + this.fromDate?.year);
-    this.reservation.end =  (this.toDate == undefined ) ? (this.fromDate?.month + "/" + this.fromDate?.day + "/" + this.fromDate?.year) : (this.toDate?.month + "/" + this.toDate?.day + "/"+ this.toDate?.year );
-    
+    this.reservation.end =  (this.toDate == undefined ) ? this.reservation.start : (this.toDate?.month + "/" + this.toDate?.day + "/"+ this.toDate?.year );
     let daysbooked = (this.reservation.start == this.reservation.end) ? 1 : this.dayDiff(new Date(this.reservation.start), new Date(this.reservation.end));
-    
-    this.reservation.price = final_price * daysbooked;
-
+    this.reservation.price = Number((final_price * daysbooked).toFixed(2));
     this.reservation = await this.reservationService.addReservation(this.reservation);
     this.reservationService.reservation = this.reservation;
-    
     this.reservationService.setReservations();
     this.reservationService.setReservation();
-
-    
-
-    this.user.reservationIds.push(this.reservation.id);
-  
+    this.user.reservationIds.push(this.reservation.id);  
     this.userService.updateUser(this.user);    
-    
     this.hotelService.updateHotel(this.hotel);
-    
     this.userService.user = this.user;
-   
     this.userService.setUsers();
-   
     this.userService.setUser();
-
     localStorage.setItem('user', JSON.stringify(this.user));   // store object
-    
     this.router.navigate(['user-information']);
   }
 
   dayDiff(firstDate: Date, secondDate: Date) {
     return Math.floor( Math.abs( <any>secondDate - <any> firstDate) / (1000*60*60*24));
   }
-
 
   onDateSelection(date: NgbDate) {
     if (!this.fromDate && !this.toDate) {
@@ -165,12 +140,4 @@ export class ReservationCompleteFormComponent implements OnInit {
     const parsed = this.formatter.parse(input);
     return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
   }
-}
-
-function room(room: any, arg1: (any: any) => void) {
-  throw new Error('Function not implemented.');
-}
-
-function isSelectedHotel(room: any, roomName: any) {
-  throw new Error('Function not implemented.');
 }

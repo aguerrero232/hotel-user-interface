@@ -52,53 +52,14 @@ input[type=radio]:checked {
   box-shadow: none !important;
 }
 
-.card-header {
-  background-image: url("./assets/img/bg-img-1.gif");
-  border: 1px solid white;
-  color: white;
-  text-align: center;
-}
-
-.img-fluid {
-  max-width: 65%;
-  height: auto;
-}
-
-.form-control {
-  background-image: url("./assets/img/bg-img-1.gif");
-  color: white;
-  width: 295px;
-  margin: 15px;
-}
-
-.card.bg-dark {
-  border: 1px solid white;
-  /* min-width: 340px; */
-}
-
-form>div>.btn {
-  /* background-color: rgb(94, 76, 209); */
-  background-image: url("./assets/img/bg-img-1.gif");
-}
-
-form>div>.btn:hover {
-  /* background-color: rgb(94, 76, 209); */
-  background-image: url("./assets/img/bg-img-2.gif");
-}
-
 label {
   color: white;
-
 }
 
+h3>a.nav-link,
 h3 {
-  color: whitesmoke;
+  color: white;
   font-size: 70px;
-}
-
-.oneBigBoy {
-  margin-top: 50px;
-  margin-bottom: 50px;
 }
 
 a,
@@ -113,14 +74,12 @@ a.nav-link:hover {
   cursor: pointer;
 }
 
-.grid-container {
-  height: 100%;
-  margin-top: 10px;
-  padding: 5px 5x;
-  display: grid;
-  grid-gap: 20px;
-  grid-template-rows: repeat(auto-fill, minmax(300px, 1fr));
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+form>div>.btn {
+  background-image: url("./assets/img/bg-img-1.gif");
+}
+
+form>div>.btn:hover {
+  background-image: url("./assets/img/bg-img-2.gif");
 }
 
 header {
@@ -146,4 +105,42 @@ body {
 html,
 body {
   height: 100%;
+}
+
+.card-header {
+  background-image: url("./assets/img/bg-img-1.gif");
+  border: 1px solid white;
+  color: white;
+  text-align: center;
+}
+
+.img-fluid {
+  max-width: 65%;
+  height: auto;
+}
+
+.form-control {
+  background-image: url("./assets/img/bg-img-1.gif");
+  color: white;
+  width: 295px;
+  margin: 15px;
+}
+
+.card.bg-dark {
+  border: 1px solid white;
+}
+
+.oneBigBoy {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.grid-container {
+  height: 100%;
+  margin-top: 10px;
+  padding: 5px 5x;
+  display: grid;
+  grid-gap: 20px;
+  grid-template-rows: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
 }

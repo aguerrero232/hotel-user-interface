@@ -14,8 +14,10 @@
           <br>
           <span *ngFor="let room of hotel.rooms">
             <span *ngIf="room.price != -1 && room.numRoomsAvailable > 0">
-              <label onmousedown="return false" onselectstart="return false">{{room.name}}</label>
+              <label onmousedown="return false" onselectstart="return false">{{room.name}}, ${{room.price}} per
+                night.</label>
               <input type="radio" name="room" value="{{room.name}}" class="form-check-input" ngModel />
+
             </span>
           </span>
 
@@ -55,7 +57,7 @@
 
   <div class="card bg-dark" id="hotelCard">
     <div class='card-header'>
-      <h3>{{ hotel.name }}</h3>
+      <h5>{{ hotel.name }}</h5>
     </div>
     <span *ngIf="hotel.picture === 0; else elseBlock">
       <img src="../../../assets/img/hotelpic.jpg" class="card-img" alt="">
