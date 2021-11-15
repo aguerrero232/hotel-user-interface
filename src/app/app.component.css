@@ -21,3 +21,7 @@
 .container {
   display: inline-block;
 }
+
+footer>div>p>a {
+  color: #fff;
+}
