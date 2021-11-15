@@ -19,7 +19,7 @@ import {NgbDate, NgbDateParserFormatter, NgbCalendar } from '@ng-bootstrap/ng-bo
 export class ReservationFormComponent implements OnInit {
 
   reservation!: Reservation;
-  priceRange: Number = 50;
+  priceRange: Number = 10;
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
   hoveredDate: NgbDate | null=null;
