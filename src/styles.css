@@ -20,7 +20,7 @@ button,
 }
 
 input[type=text] {
-  width: 70%;
+  width: 240px;
 }
 
 input[type=range] {
