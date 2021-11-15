@@ -27,13 +27,12 @@ export class ReservationFormComponent implements OnInit {
   user!: User;
   userSub: Subscription;  
 
+  hotelsFound: Hotel[] = [];
   hotels: Hotel[] = [];
   hotelsSub: Subscription;  
   
   hotel: any;
   hotelSub: Subscription;
-
-  finalCriteria: Hotel[] = [];
 
   amenities = ['Gym', 'Spa', 'Pool', 'Business Office', 'WiFi'];
   
@@ -53,18 +52,8 @@ export class ReservationFormComponent implements OnInit {
     if(this.user === undefined){
       this.router.navigate(["/sign-in"]); 
     }
-    this.reservation = {
-      id: "",
-      _hotelId: "",
-      _userId: "",
-      room: {
-        name: "",   
-        price: 0
-      },
-      start: "",
-      end: "", 
-      price: 0
-    }
+    this.hotelsFound = this.hotelParser.getParsedHotels();
+    this.reservation = { id: "", _hotelId: "", _userId: "", room: { name: "", price: 0 }, start: "", end: "", price: 0 }
     this.hotels = this.hotelService.hotels;
   }
  
@@ -74,13 +63,12 @@ export class ReservationFormComponent implements OnInit {
     this.hotelsSub.unsubscribe();
   }
 
-  onSubmit(form: NgForm): void {
+  onSubmit(form: NgForm) {
     this.hotels = this.hotelService.hotels;
-    this.finalCriteria = [];
-    
-    let wantedAmenities: string[] = [];
-    
     let htl: Hotel[] = [];
+    let finalCriteria: Hotel[] = [];
+    let priceMatchedHotels = [];
+    let wantedAmenities: string[] = [];
     
     this.hotels.forEach( x => {
       if(!htl.some(y => JSON.stringify(y) === JSON.stringify(x))){
@@ -107,35 +95,38 @@ export class ReservationFormComponent implements OnInit {
       }
     });
 
-    let matchedHotels = [];
-
     for(let i = 0; i < htl.length; i++){
       let c_h_r = htl[i].rooms.filter(h_r => h_r.price <= this.priceRange);    
       if(c_h_r.length > 0){
         let zero_min_check = c_h_r.filter(room => room.price != 0);
         let min_check = zero_min_check.filter(room => room.price <= this.priceRange);
         if(min_check.length > 0)
-          matchedHotels.push(htl[i]);
+          priceMatchedHotels.push(htl[i]);
       }
     }
 
-    if(matchedHotels.length <= 0){
+    if(priceMatchedHotels.length <= 0){
       alert("No Hotels fit that criteria!")
       return;
     }
     
     if(wantedAmenities.length == 0){
-      matchedHotels;
+      priceMatchedHotels;
       return;
     }
-   
-    for(let i = 0; i < matchedHotels.length; i++){  
-      let checker = (arr: string | any[], target: any[]) => target.every((v: any) => arr.includes(v));
-      if(!checker(matchedHotels[i].amenities, wantedAmenities))
-        matchedHotels.splice(i,1)
+
+    for(let i = 0; i < priceMatchedHotels.length; i++){   
+      if(this.isSubArray(priceMatchedHotels[i].amenities, wantedAmenities, priceMatchedHotels[i].amenities.length, wantedAmenities.length)){
+        finalCriteria.push(priceMatchedHotels[i]);
+      }
     }
- 
-    this.finalCriteria = matchedHotels;
+    this.hotelParser.setParsedHotels(finalCriteria);
+    
+    this.hotelsFound = this.hotelParser.getParsedHotels();
+     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['reservation-form']);
+    });
+
     return;    
   } 
 
@@ -150,8 +141,29 @@ export class ReservationFormComponent implements OnInit {
     }
   }
 
-  metCriteria(){
-    return this.finalCriteria;
+  isSubArray(A: string[], B: string[], n: number, m: number){
+    // Two pointers to traverse the arrays
+    var i = 0, j = 0;
+    // Traverse both arrays simultaneously
+    while (i < n && j < m) {
+      // If element matches
+      // increment both pointers
+      if (A[i] == B[j]) {
+        i++;
+        j++;
+        // If array B is completely
+        // traversed
+        if (j == m)
+          return true;
+      }
+      // If not,
+      // increment i and reset j
+      else {
+        i = i - j + 1;
+        j = 0;
+      }
+    }
+    return false;
   }
 
   openViewHotel(content: any, hotel: Hotel){

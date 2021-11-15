@@ -16,8 +16,6 @@ import { ParseHotelsService } from '../parse-hotels.service';
 export class HotelsFoundByNameComponent implements OnInit {
   hotelsFound: Hotel[] = [];
   hotel: any;
-  p_Hotels: Hotel[] = [];
-
   user: any;
   users: User[] = [];
   userSub: Subscription;

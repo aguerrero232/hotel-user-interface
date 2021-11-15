@@ -3,6 +3,7 @@
   <h3 class="text-center" onmousedown="return false" onselectstart="return false">Find your match!</h3>
 
   <div class='card bg-dark' id="searchForm">
+
     <form #myform="ngForm" (ngSubmit)="onSubmit(myform)">
 
       <div class="form-control">
@@ -50,8 +51,7 @@
 
 <div class="oneBigBoi">
   <div class="grid-container">
-
-    <div *ngFor="let hotel of finalCriteria">
+    <div *ngFor="let hotel of hotelsFound">
       <div class="card bg-dark" id="hotelCard">
 
         <span *ngIf="hotel.picture === 0; else elseBlock">
