@@ -10,8 +10,10 @@ and ng serve -o to start the front end
 
 ## Contributors
  - Ariel Guerrero
- - Nicolas Ruiz 
  - Darean Wilde
  - Reed Olm
  - Daniel Castro
  - Gabriella Mariello
+
+## Absent Groupmember
+ - Nicolas Ruiz 
