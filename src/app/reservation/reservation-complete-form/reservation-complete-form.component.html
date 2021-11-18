@@ -9,42 +9,50 @@
 
       <form #myform="ngForm" (ngSubmit)="onSubmit(myform)">
 
-        <div class="form-control">
-          <label for="room" class="form-label" onmousedown="return false" onselectstart="return false">Rooms</label>
-          <br>
-          <span *ngFor="let room of hotel.rooms">
-            <span *ngIf="room.price != -1 && room.numRoomsAvailable > 0">
-              <label onmousedown="return false" onselectstart="return false">{{room.name}}, ${{room.price}} per
-                night.</label>
-              <input type="radio" name="room" value="{{room.name}}" class="form-check-input" ngModel />
+        <div class="row">
+          <div class="col">
+            <div class="form-check" id="bigBoiCheck">
+              <label for="room" class="form-label" onmousedown="return false" onselectstart="return false">Rooms</label>
               <br>
-            </span>
-          </span>
+              <span *ngFor="let room of hotel.rooms">
+                <span *ngIf="room.price != -1 && room.numRoomsAvailable > 0">
+                  <div class="form-check">
+                    <input type="radio" name="room" value="{{room.name}}" class="form-check-input" ngModel />
+                    <label onmousedown="return false" onselectstart="return false">{{room.name}}, ${{room.price}} per
+                      night.</label>
+                  </div>
 
+                </span>
+              </span>
+            </div>
+          </div>
+          <div class="col">
+            <!-- start date picker -->
+            <div class="form-group">
+              <label class="form-label" onmousedown="return false" onselectstart="return false">Booking Dates</label>
+              <br>
+              <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker"
+                [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t"
+                outsideDays="hidden" [startDate]="fromDate!" tabindex="-1" type="hidden">
+              <ng-template #t let-date let-focused="focused">
+                <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                  [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+                  (mouseleave)="hoveredDate = null">
+
+                  {{ date.day }}
+
+                </span>
+              </ng-template>
+              <input #dpFromDate id="dateIn" placeholder="start date" name="dpFromDate"
+                [value]="formatter.format(fromDate)" (input)="fromDate = validateInput(fromDate, dpFromDate.value)"
+                size="5" (click)="datepicker.toggle()">
+              <input #dpToDate id="dateIn" placeholder="end date" name="dpToDate" [value]="formatter.format(toDate)"
+                (input)="toDate = validateInput(toDate, dpToDate.value)" (click)="datepicker.toggle()">
+            </div>
+            <!-- end date picker -->
+          </div>
         </div>
 
-        <!-- start date picker -->
-        <div class="form-control">
-          <label class="form-label" onmousedown="return false" onselectstart="return false">Booking Dates</label>
-          <br>
-          <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker"
-            [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t"
-            outsideDays="hidden" [startDate]="fromDate!" tabindex="-1" type="hidden">
-          <ng-template #t let-date let-focused="focused">
-            <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
-              [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
-              (mouseleave)="hoveredDate = null">
-
-              {{ date.day }}
-
-            </span>
-          </ng-template>
-          <input #dpFromDate id="dateIn" placeholder="start date" name="dpFromDate" [value]="formatter.format(fromDate)"
-            (input)="fromDate = validateInput(fromDate, dpFromDate.value)" size="5" (click)="datepicker.toggle()">
-          <input #dpToDate id="dateIn" placeholder="end date" name="dpToDate" [value]="formatter.format(toDate)"
-            (input)="toDate = validateInput(toDate, dpToDate.value)" (click)="datepicker.toggle()">
-        </div>
-        <!-- end date picker -->
 
         <div style="text-align: right; padding-top: 10px;">
           <button class="btn btn-secondary" type="submit" style="align-content: end;">Reserve</button>
@@ -55,7 +63,7 @@
     </div>
   </div>
 
-  <div class="card bg-dark" id="hotelCard">
+  <!-- <div class="card bg-dark" id="hotelCard">
     <div class='card-header'>
       <h5>{{ hotel.name }}</h5>
     </div>
@@ -89,14 +97,13 @@
     </ul>
     <div *ngIf="hotel.amenities.length > 0">
       <li>Amenities</li>
-      <!--li-->
       <ul *ngFor="let amen of hotel.amenities">
         <li>{{amen}}</li>
       </ul>
     </div>
     </ul>
   </div>
-</div>
+</div> -->
 
 
 

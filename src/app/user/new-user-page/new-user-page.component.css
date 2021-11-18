@@ -1,14 +1,4 @@
-.form-control {
-  color: white;
-  width: 295px;
-  margin: 15px;
-}
-
 .card.bg-dark {
-  width: 360px;
+  width: 70%;
   margin: auto;
-}
-
-.form-control>input {
-  width: fit-content;
 }

@@ -19,10 +19,6 @@ button,
   box-shadow: none !important;
 }
 
-input[type=text] {
-  width: 240px;
-}
-
 input[type=range] {
   width: 70%;
 }
@@ -34,13 +30,6 @@ input[type=range]::-webkit-slider-thumb:focus {
   box-shadow: none !important;
 }
 
-input[type=checkbox],
-input[type=radio] {
-  margin-right: 10px;
-  margin-left: 5px;
-  display: inline-block;
-  vertical-align: -4%
-}
 
 input[type='checkbox']:focus,
 input[type=radio] {
@@ -76,14 +65,6 @@ a:hover,
 a.nav-link:hover {
   color: rgb(129, 85, 230);
   cursor: pointer;
-}
-
-form>div>.btn {
-  background-image: url("./assets/img/bg-img-1.gif");
-}
-
-form>div>.btn:hover {
-  background-image: url("./assets/img/bg-img-2.gif");
 }
 
 header {
@@ -123,13 +104,6 @@ body {
   height: auto;
 }
 
-.form-control {
-  background-image: url("./assets/img/bg-img-1.gif");
-  color: white;
-  width: 295px;
-  margin: 15px;
-}
-
 .card.bg-dark {
   border: 1px solid white;
 }
@@ -147,4 +121,40 @@ body {
   grid-gap: 20px;
   grid-template-rows: repeat(auto-fill, minmax(300px, 1fr));
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+}
+
+input.form-control {
+  width: 70%;
+  margin: 10px;
+}
+
+input.form-control:focus {
+  border-color: rgb(110, 69, 207);
+  box-shadow: none !important;
+}
+
+.form-group {
+  background-image: url("./assets/img/bg-img-1.gif");
+  color: white;
+  margin: 15px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+#bigBoiCheck {
+  background-image: url("./assets/img/bg-img-1.gif");
+  color: white;
+  margin: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  min-height: 102px;
+}
+
+
+form>div>.btn {
+  background-image: url("./assets/img/bg-img-1.gif");
+}
+
+form>div>.btn:hover {
+  background-image: url("./assets/img/bg-img-2.gif");
 }

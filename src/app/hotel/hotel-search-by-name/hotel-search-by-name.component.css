@@ -1,11 +1,16 @@
-.form-control {
+#hotelName {
+  background-image: url("../../../assets/img/bg-img-1.gif");
   margin: auto;
   width: 90%;
   max-width: 700px;
   text-align: center;
 }
 
-input[type='text']{
+#hotelName:focus {
+  background-image: url("../../../assets/img/bg-img-2.gif");
+}
+
+input[type='text'] {
   color: #fff;
 }
 

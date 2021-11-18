@@ -19,7 +19,7 @@ import {NgbDate, NgbDateParserFormatter, NgbCalendar } from '@ng-bootstrap/ng-bo
 export class ReservationFormComponent implements OnInit {
 
   reservation!: Reservation;
-  priceRange: Number = 10;
+  priceRange: Number = 50;
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
   hoveredDate: NgbDate | null=null;
@@ -120,10 +120,10 @@ export class ReservationFormComponent implements OnInit {
         finalCriteria.push(priceMatchedHotels[i]);
       }
     }
+
     this.hotelParser.setParsedHotels(finalCriteria);
-    
-    this.hotelsFound = this.hotelParser.getParsedHotels();
-     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+    this.hotelsFound = finalCriteria;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['reservation-form']);
     });
 

@@ -6,7 +6,7 @@
 
     <form #myform="ngForm" (ngSubmit)="onSubmit(myform)">
 
-      <div class="form-control">
+      <div class="form-group">
         <label for="priceRange" class="form-label" onmousedown="return false" onselectstart="return false">Nightly
           Price: ${{priceRange}}</label>
         <br>
@@ -15,28 +15,41 @@
           max="700" step="5" start="10">
       </div>
 
-      <div class="form-control">
-        <label for="amenities" class="form-label" onmousedown="return false"
-          onselectstart="return false">Amenities</label>
+      <div class="form-check" id="bigBoiCheck">
+        <label>Amenities</label>
         <br>
 
-        <label for="gym">Gym</label>
-        <input type="checkbox" value="Gym" name='Gym' id='Gym' class="form-check-input" ngModel />
+        <div class="form-check form-check-inline">
+          <input type="checkbox" value="Gym" name='Gym' id='Gym' class="form-check-input" ngModel />
+          <label for="Gym">Gym</label>
 
-        <label for="spa">Spa</label>
-        <input type="checkbox" value="Spa" name='Spa' id='Spa' class="form-check-input" ngModel />
+        </div>
 
-        <label for="pool">Pool</label>
-        <input type="checkbox" value="Pool" name='Pool' id='Pool' class="form-check-input" ngModel />
+        <div class="form-check form-check-inline">
+          <input type="checkbox" value="Spa" name='Spa' id='Spa' class="form-check-input" ngModel />
+          <label for="Spa">Spa</label>
 
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input type="checkbox" value="Pool" name='Pool' id='Pool' class="form-check-input" ngModel />
+          <label for="Pool">Pool</label>
+
+        </div>
         <br>
 
-        <label for="business office">Business Office</label>
-        <input type="checkbox" value="Business Office" name='Business Office' id='Business Office'
-          class="form-check-input" ngModel />
+        <div class="form-check form-check-inline">
+          <input type="checkbox" value="Business Office" name='Business Office' id='Business Office'
+            class="form-check-input" ngModel />
+          <label for="business office">Business Office</label>
 
-        <label for="wifi">Wifi</label>
-        <input type="checkbox" value="WiFi" name='WiFi' id='WiFi' class="form-check-input" ngModel />
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input type="checkbox" value="WiFi" name='WiFi' id='WiFi' class="form-check-input" ngModel />
+          <label for="WiFi">Wifi</label>
+
+        </div>
       </div>
 
       <div style="text-align: right; padding-top: 10px;">
