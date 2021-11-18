@@ -1,5 +1,6 @@
 .card.bg-dark {
-  max-width: 50%;
+  max-width: 600px;
+  width: 95%;
   margin: auto;
 }
 

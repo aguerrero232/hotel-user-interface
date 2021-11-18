@@ -64,8 +64,11 @@ export class ReservationFormComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
+
     this.hotels = this.hotelService.hotels;
+
     let htl: Hotel[] = [];
+    let p_h: Hotel[] = [];
     let finalCriteria: Hotel[] = [];
     let priceMatchedHotels = [];
     let wantedAmenities: string[] = [];
@@ -111,7 +114,15 @@ export class ReservationFormComponent implements OnInit {
     }
     
     if(wantedAmenities.length == 0){
-      priceMatchedHotels;
+     
+      priceMatchedHotels.forEach( x => {
+      if(!p_h.some(y => JSON.stringify(y) === JSON.stringify(x))){
+        p_h.push(x)
+      }
+      });
+
+      this.hotelParser.setParsedHotels(p_h);
+      this.hotelsFound = p_h;
       return;
     }
 
@@ -121,8 +132,16 @@ export class ReservationFormComponent implements OnInit {
       }
     }
 
-    this.hotelParser.setParsedHotels(finalCriteria);
-    this.hotelsFound = finalCriteria;
+    
+    finalCriteria.forEach( x => {
+      if(!p_h.some(y => JSON.stringify(y) === JSON.stringify(x))){
+        p_h.push(x)
+      }
+    });
+
+    this.hotelParser.setParsedHotels(p_h);
+    this.hotelsFound = p_h;
+
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['reservation-form']);
     });
