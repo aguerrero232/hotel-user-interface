@@ -12,7 +12,6 @@
         <p>
           {{user.name}}
           <br>
-
           {{user.email}}
         </p>
       </div>
@@ -49,7 +48,8 @@
         <div class='card bg-dark' id='usrpage'>
           <p>Current Reservations</p>
           <div class="table-responsive">
-            <table class="table table-sm table-striped table-bordered table-hover table-dark">
+            <table class="table table-sm table-striped table-bordered table-hover table-dark"
+              style="text-align: center;">
               <thead>
                 <tr>
                   <th scope="col">Hotel</th>
@@ -67,7 +67,8 @@
                   <td>{{res_data.res.price}}</td>
                   <td>{{res_data.res.start}}</td>
                   <td>{{res_data.res.end}}</td>
-                  <td> <button class='btn' (click)="openUpdateRes(content3, res_data)">x</button> </td>
+                  <td> <button class='btn' (click)="openUpdateRes(content3, res_data)">
+                      &#9757;</button> </td>
                 </tr>
               </tbody>
             </table>

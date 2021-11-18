@@ -5,24 +5,18 @@
 }
 
 .card.bg-dark {
-  width: 360px;
+  width: 99%;
   margin: auto;
 }
 
 .card-body#viewHotels {
-  width: 97%;
+  height: 100%;
+  max-width: 490px;
   margin: auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
 }
 
 table {
-  width: 90%;
-}
-
-
-.form-control>input {
-  width: fit-content;
+  width: 95%;
 }
 
 p {
@@ -70,12 +64,4 @@ button.calendar:active {
 
 .custom-day.faded {
   background-color: rgba(126, 115, 201, 0.7);
-}
-
-.col {
-  margin: 15px;
-}
-
-input {
-  border: none;
 }
