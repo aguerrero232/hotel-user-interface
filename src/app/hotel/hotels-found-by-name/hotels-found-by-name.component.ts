@@ -35,6 +35,7 @@ export class HotelsFoundByNameComponent implements OnInit {
   ngOnDestroy(){
     this.userSub.unsubscribe();
     this.usersSub.unsubscribe();
+    this.hotelParser.setParsedHotels([]);
   }
 
   openViewHotel(content: any, hotel: Hotel){
