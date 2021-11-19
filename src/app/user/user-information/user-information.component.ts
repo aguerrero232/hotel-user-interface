@@ -305,13 +305,20 @@ export class UserInformationComponent implements OnInit {
     // error checking weekend diff for 0
     let wd = ( c_hotel.weekendDiff > 0) ? c_hotel.weekendDiff : 0; 
     // setting final price based on day of the week (weekend vs not)
-    let final_price = ( day == 0 || day == 6 ) ? f_room.price - ( f_room.price * ( (wd > 0) ? wd/100 : 1)) :  f_room.price;
+    
     c_res.room.name = f_room.name;
     c_res.room.price = f_room.price;
     c_res.start = (this.fromDate?.month + "/" + this.fromDate?.day + "/" + this.fromDate?.year);
     c_res.end =  (this.toDate == undefined ) ? c_res.start : (this.toDate?.month + "/" + this.toDate?.day + "/"+ this.toDate?.year );
+    
     let daysbooked = (c_res.start == c_res.end) ? 1 : this.dayDiff(new Date(c_res.start), new Date(c_res.end));
-    c_res.price = Number((final_price * daysbooked).toFixed(2));
+    
+    let weekend_count = this.weekendCount(new Date(this.reservation.start), new Date(this.reservation.end), daysbooked);
+    
+    let final_price =  (f_room.price * (daysbooked - weekend_count) + ( f_room.price * weekend_count + ( f_room.price * weekend_count * ((wd > 0) ? wd/100 : 1)))).toFixed(2);
+
+    c_res.price = Number(final_price);
+
     c_res = await this.reservationService.updateReservation(c_res);
     this.reservationService.setReservations();
     this.modalService.dismissAll();
@@ -321,7 +328,20 @@ export class UserInformationComponent implements OnInit {
   }
 
   dayDiff(firstDate: Date, secondDate: Date) {
-    return Math.floor( Math.abs( <any>secondDate - <any> firstDate) / (1000*60*60*24));
+    return Math.floor( Math.abs( <any>secondDate - <any> firstDate) / (1000*60*60*24)) + 1;
+  }
+
+  weekendCount(firstDate: Date, secondDate: Date, numDays: number){
+    let weekendCount = 0;
+    let nextDate = firstDate;
+    for(let i = 0; i < numDays; i++){
+      let day = nextDate.getDay();
+      if( day == 0 || day == 6 ){
+        weekendCount += 1;
+      }
+      nextDate.setDate(nextDate.getDate()+1);
+    }
+    return weekendCount;
   }
 
   onDateSelection(date: NgbDate) {

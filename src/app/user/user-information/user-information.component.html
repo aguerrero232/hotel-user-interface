@@ -64,7 +64,7 @@
                 <tr *ngFor="let res_data of user_reservations">
                   <th scope="row">{{res_data.hotel.name}} </th>
                   <td>{{res_data.res.room.name}}</td>
-                  <td>{{res_data.res.price}}</td>
+                  <td>${{res_data.res.price.toFixed(2)}}</td>
                   <td>{{res_data.res.start}}</td>
                   <td>{{res_data.res.end}}</td>
                   <td> <button class='btn' (click)="openUpdateRes(content3, res_data)">
@@ -276,10 +276,6 @@
           </div>
           <!-- end date picker -->
 
-          <span>
-            <button type="button" class="btn btn-secondary" (click)="delete_res()" type="submit">Cancel
-              Reservation</button>
-          </span>
 
           <span style='float:right;'>
             <button type="button" class="btn btn-secondary" type="submit">Update</button>
@@ -291,7 +287,16 @@
     </div>
 
     <div class="modal-footer bg-dark">
-      <button class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+      <span>
+        <button type="button" class="btn btn-secondary" (click)="delete_res()" type="submit">Cancel
+          Reservation</button>
+      </span>
+
+      <span style='float:right;'>
+
+        <button class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+      </span>
+
     </div>
 
   </ng-template>

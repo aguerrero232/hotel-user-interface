@@ -33,6 +33,7 @@ export class ReservationCompleteFormComponent implements OnInit {
   hotelSub: Subscription;
 
   reservationSub: Subscription;
+  day = new Date().getDay();
 
   constructor(private userService: UserService, private hotelService: HotelService, private reservationService: ReservationService, private router: Router, private calendar: NgbCalendar, public formatter: NgbDateParserFormatter){
     this.fromDate = calendar.getToday();
@@ -86,15 +87,24 @@ export class ReservationCompleteFormComponent implements OnInit {
     // error checking weekend diff for 0
     let wd = ( this.hotel.weekendDiff > 0) ? this.hotel.weekendDiff : 0; 
     // setting final price based on day of the week (weekend vs not)
-    let final_price = ( day == 0 || day == 6 ) ? f_room.price - ( f_room.price * ( (wd > 0) ? wd/100 : 1)) :  f_room.price;
+  
     this.reservation._hotelId = this.hotel.id;
     this.reservation._userId = this.user.id;
+    
     this.reservation.room.name = f_room.name;
     this.reservation.room.price = f_room.price;
+    
     this.reservation.start = (this.fromDate?.month + "/" + this.fromDate?.day + "/" + this.fromDate?.year);
     this.reservation.end =  (this.toDate == undefined ) ? this.reservation.start : (this.toDate?.month + "/" + this.toDate?.day + "/"+ this.toDate?.year );
+    
     let daysbooked = (this.reservation.start == this.reservation.end) ? 1 : this.dayDiff(new Date(this.reservation.start), new Date(this.reservation.end));
-    this.reservation.price = Number((final_price * daysbooked).toFixed(2));
+    
+    let weekend_count = this.weekendCount(new Date(this.reservation.start), new Date(this.reservation.end), daysbooked);
+    
+    let final_price =  (f_room.price * (daysbooked - weekend_count) + ( f_room.price * weekend_count + ( f_room.price * weekend_count * ((wd > 0) ? wd/100 : 1)))).toFixed(2);
+
+    this.reservation.price = Number(final_price);
+
     this.reservation = await this.reservationService.addReservation(this.reservation);
     this.reservationService.reservation = this.reservation;
     this.reservationService.setReservations();
@@ -110,7 +120,20 @@ export class ReservationCompleteFormComponent implements OnInit {
   }
 
   dayDiff(firstDate: Date, secondDate: Date) {
-    return Math.floor( Math.abs( <any>secondDate - <any> firstDate) / (1000*60*60*24));
+    return Math.floor( Math.abs( <any>secondDate - <any> firstDate) / (1000*60*60*24)) + 1;
+  }
+
+  weekendCount(firstDate: Date, secondDate: Date, numDays: number){
+    let weekendCount = 0;
+    let nextDate = firstDate;
+    for(let i = 0; i < numDays; i++){
+      let day = nextDate.getDay();
+      if( day == 0 || day == 6 ){
+        weekendCount += 1;
+      }
+      nextDate.setDate(nextDate.getDate()+1);
+    }
+    return weekendCount;
   }
 
   onDateSelection(date: NgbDate) {
