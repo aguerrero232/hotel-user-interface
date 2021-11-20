@@ -73,7 +73,8 @@ export class UserInformationComponent implements OnInit {
   getReservations(){
     let res: Reservation[] = [];
     let htl: Hotel[] = [];
-    
+    let user_res_hotel_filt: { res: Reservation; hotel: Hotel; }[] = [];
+    let filtered: { res: Reservation; hotel: Hotel; }[] = [];    
     // async causeing dups so filtering for uniques
     this.reservations.forEach( x => {
       if(!res.some(y => JSON.stringify(y) === JSON.stringify(x))){
@@ -88,15 +89,20 @@ export class UserInformationComponent implements OnInit {
     });
 
     let user_reservations_filt = this.reservations.filter( r => r._userId == this.user.id);
-    let user_res_hotel_filt: { res: Reservation; hotel: Hotel; }[] = [];
 
     user_reservations_filt.forEach( r => {
       let h = htl.find(f => f.id == r._hotelId);
       if(h != undefined)
         user_res_hotel_filt.push({res: r, hotel: h});
     });
+    
+    user_res_hotel_filt.forEach( x => {
+      if(!filtered.some(y => JSON.stringify(y) === JSON.stringify(x))){
+        filtered.push(x)
+      }
+    });
 
-    this.user_reservations = user_res_hotel_filt;
+    this.user_reservations = filtered;
   }
 
   async delete_res(){
