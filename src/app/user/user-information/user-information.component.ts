@@ -1,6 +1,6 @@
+import { Reservation } from './../../reservation/reservation.model';
 import { Component, OnInit } from '@angular/core';
 import { User } from '../user.model';
-import { Reservation } from 'src/app/reservation/reservation.model';
 import {UserService} from '../user.service';
 import { Subscription } from 'rxjs';
 import { NgbCalendar, NgbDate, NgbDateParserFormatter, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -71,7 +71,6 @@ export class UserInformationComponent implements OnInit {
   }
 
   getReservations(){
-    let c_user_reservations = new Array(); 
     let res: Reservation[] = [];
     let htl: Hotel[] = [];
     
@@ -87,18 +86,17 @@ export class UserInformationComponent implements OnInit {
         htl.push(x)
       }
     });
-    
-    for(let i = 0; i < this.user.reservationIds.length; i++){
-      let c_id = this.user.reservationIds[i];
-      let r = res.find(r => r.id == c_id);
-      if(r){
-        let h = htl.find(h => h.id == r!._hotelId);
-        if(h)
-          c_user_reservations.push({res: r, hotel: h});
-      }
-    }
 
-    this.user_reservations = c_user_reservations;
+    let user_reservations_filt = this.reservations.filter( r => r._userId == this.user.id);
+    let user_res_hotel_filt: { res: Reservation; hotel: Hotel; }[] = [];
+
+    user_reservations_filt.forEach( r => {
+      let h = htl.find(f => f.id == r._hotelId);
+      if(h != undefined)
+        user_res_hotel_filt.push({res: r, hotel: h});
+    });
+
+    this.user_reservations = user_res_hotel_filt;
   }
 
   async delete_res(){
@@ -124,16 +122,19 @@ export class UserInformationComponent implements OnInit {
         break;
     }
 
-    this.user.reservationIds = this.user.reservationIds.filter((s: any) => s != this.selected_res.res.id);
-    this.userService.user = this.user;
-    this.userService.updateUser(this.user);
-    this.userService.setUsers();
-    this.userService.setUser();
+    // this.userService.user = this.user;
+    // this.userService.updateUser(this.user);
+    // this.userService.setUsers();
+    // this.userService.setUser();
+    
     c_hotel.rooms[roomType].numRoomsAvailable += 1;
+    
     this.hotelService.updateHotel(c_hotel);
     this.hotelService.setHotels();
     this.modalService.dismissAll();
+    
     localStorage.setItem('user', JSON.stringify(this.user)); 
+    
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['user-information']);
     }); 
@@ -141,43 +142,54 @@ export class UserInformationComponent implements OnInit {
 
  updateToAdmin(form: NgForm) {
     this.users = this.userService.getUsers();
-    let res: Reservation[] = [];
     let htl: Hotel[] = [];
+    let res: Reservation[] = [];
     let password = form.value.password;
     let email = form.value.email;
     let u_user = this.users.find(u => u.email === email);
 
+    // async causeing dups so filtering for uniques
+    this.reservations.forEach( x => {
+      if(!res.some(y => JSON.stringify(y) === JSON.stringify(x))){
+        res.push(x)
+      }
+    });
+        
+    this.hotels.forEach( x => {
+      if(!htl.some(y => JSON.stringify(y) === JSON.stringify(x))){
+        htl.push(x)
+      }
+    });
+
     if (u_user){
       if (this.hashService.get(u_user.password) === password) {
         u_user.isAdmin = 1;
-        for (let i = 0; i < this.user.reservationIds.length; i++) {
-          let c_id = this.user.reservationIds[i];
-          let r = res.find(r => r.id == c_id);
-          if (r) {
-            let h = htl.find(h => h.id == r!._hotelId);
-            if (h) {
+    
+        let user_reservations_filt = this.reservations.filter( r => r._userId == this.user.id);
+        user_reservations_filt.forEach( r => {
+        let h = htl.find(f => f.id == r._hotelId);
+        
+        if(h != undefined){
+          switch (r.room.name) {
+              case 'Standard':
+                h.rooms[0].numRoomsAvailable += 1;
+              break;
 
-              switch (r.room.name) {
-                case 'Standard':
-                  h.rooms[0].numRoomsAvailable += 1;
-                  break;
+              case 'Queen':
+                h.rooms[1].numRoomsAvailable += 1;
+              break;
 
-                case 'Queen':
-                  h.rooms[1].numRoomsAvailable += 1;
-                  break;
+              case 'King':
+                h.rooms[2].numRoomsAvailable += 1;
+              break;
 
-                case 'King':
-                  h.rooms[2].numRoomsAvailable += 1;
-                  break;
-
-                default:
-                  console.log("Invalid hotel room");
-                  break;
-              }
-              this.hotelService.updateHotel(h);
+              default:
+                console.log("Invalid hotel room");
+              break;
             }
-          }
+          this.hotelService.updateHotel(h);
         }
+      });
         this.hotelService.setHotels();
         this.userService.updateUser(u_user);
         this.userService.setUsers();
@@ -197,10 +209,12 @@ export class UserInformationComponent implements OnInit {
 
   updatePassword(form: NgForm){    
     this.users = this.userService.getUsers();
+    
     let password = form.value.password;
     let confirmPassword = form.value.confirmPassword;
     let newPassword = form.value.newPassword;
     let email = form.value.email;
+    
     if(this.user.email === email){
       if( this.hashService.get(this.user.password) === password){
         if(newPassword === confirmPassword){
@@ -229,10 +243,13 @@ export class UserInformationComponent implements OnInit {
   }
  
   updateEmail(form: NgForm){
+    
     this.users = this.userService.getUsers();
+    
     let password = form.value.password;
     let email = form.value.email;
     let newEmail = form.value.newEmail;
+    
     if(this.user.email === email){
       if(this.hashService.get(this.user.password) === password){
         this.user.email = newEmail;
@@ -256,11 +273,14 @@ export class UserInformationComponent implements OnInit {
   }
 
   async onSubmitUpdateRes(form: NgForm){
+    
     let c_hotel = this.selected_res.hotel;
     let c_res = this.selected_res.res;
     let f_room: any;
     let roomName = form.value.room;
+    
     let day = new Date().getDay();
+    
     if(roomName === ""){
       alert("Room type not selected! Please select room type and doube check dates!");
       return;
@@ -304,7 +324,6 @@ export class UserInformationComponent implements OnInit {
     }
     // error checking weekend diff for 0
     let wd = ( c_hotel.weekendDiff > 0) ? c_hotel.weekendDiff : 0; 
-    // setting final price based on day of the week (weekend vs not)
     
     c_res.room.name = f_room.name;
     c_res.room.price = f_room.price;

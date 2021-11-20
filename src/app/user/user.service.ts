@@ -26,7 +26,7 @@ export class UserService {
     this.http.get(endpoint).then(data => {
       let values = JSON.parse(JSON.stringify(data))
       values.forEach( ( value: any) => {
-        let u = new User(value._id, value.email, value.password, value.name, value.reservationIds, value.isAdmin);
+        let u = new User(value._id, value.email, value.password, value.name, value.isAdmin);
         this.users.push(u);
       });
     });
@@ -59,7 +59,6 @@ export class UserService {
       "email": user.email,
       "password": user.password,
       "name": user.name,
-      "reservationIds": [],
       "isAdmin": user.isAdmin 
     }
 
@@ -79,7 +78,6 @@ export class UserService {
       "email": updatedUser.email,
       "password": updatedUser.password,
       "name": updatedUser.name,
-      "reservationIds": updatedUser.reservationIds,
       "isAdmin": updatedUser.isAdmin 
     }
 

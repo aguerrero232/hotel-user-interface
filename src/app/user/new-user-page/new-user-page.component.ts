@@ -60,7 +60,7 @@ export class NewUserPageComponent implements OnInit {
       
     if(this.isValid === true){
       let hashed_p = this.hashService.set(password);
-      let user = new User("", email, hashed_p, name, [], 0);
+      let user = new User("", email, hashed_p, name, 0);
       user = await this.userService.addUser(user);
       this.userService.setUsers();
       this.user = user;
