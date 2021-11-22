@@ -33,48 +33,38 @@
     <!-- checking if the user is an admin, if they are get sent to elseBlock4 -->
     <div *ngIf="user.isAdmin === 0; else elseBlock4">
       <!-- regular user account -->
-      <!-- checking length of users reservations, if > 0 go to elseBlock2 -->
-      <div *ngIf="user.reservationIds.length === 0; else elseBlock2">
-        <!-- go here if no reservations are made-->
-        <div class='card bg-dark' id='usrpage'>
-          <p>No Reservations</p>
+
+      <div *ngIf="getReservations()"></div>
+
+      <div class='card bg-dark' id='usrpage'>
+        <p>Current Reservations</p>
+        <div class="table-responsive">
+          <table class="table table-sm table-striped table-bordered table-hover table-dark" style="text-align: center;">
+            <thead>
+              <tr>
+                <th scope="col">Hotel</th>
+                <th scope="col">Room</th>
+                <th scope="col">Price</th>
+                <th scope="col">Start</th>
+                <th scope="col">End</th>
+                <th scope="col">Update</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let res_data of user_reservations">
+                <th scope="row">{{res_data.hotel.name}} </th>
+                <td>{{res_data.res.room.name}}</td>
+                <td>${{res_data.res.price.toFixed(2)}}</td>
+                <td>{{res_data.res.start}}</td>
+                <td>{{res_data.res.end}}</td>
+                <td> <button class='btn' (click)="openUpdateRes(content3, res_data)">
+                    &#9757;</button> </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-      <!-- user has made reservations -->
-      <ng-template #elseBlock2>
-        <!-- load of the reservations -->
-        <div *ngIf="getReservations()"></div>
 
-        <div class='card bg-dark' id='usrpage'>
-          <p>Current Reservations</p>
-          <div class="table-responsive">
-            <table class="table table-sm table-striped table-bordered table-hover table-dark"
-              style="text-align: center;">
-              <thead>
-                <tr>
-                  <th scope="col">Hotel</th>
-                  <th scope="col">Room</th>
-                  <th scope="col">Price</th>
-                  <th scope="col">Start</th>
-                  <th scope="col">End</th>
-                  <th scope="col">Update</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let res_data of user_reservations">
-                  <th scope="row">{{res_data.hotel.name}} </th>
-                  <td>{{res_data.res.room.name}}</td>
-                  <td>${{res_data.res.price.toFixed(2)}}</td>
-                  <td>{{res_data.res.start}}</td>
-                  <td>{{res_data.res.end}}</td>
-                  <td> <button class='btn' (click)="openUpdateRes(content3, res_data)">
-                      &#9757;</button> </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </ng-template>
 
     </div>
 
