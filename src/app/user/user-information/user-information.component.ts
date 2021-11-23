@@ -231,6 +231,9 @@ export class UserInformationComponent implements OnInit {
           this.userService.setUser();
           this.modalService.dismissAll();
           localStorage.setItem('user', JSON.stringify(this.user));   // store object
+              this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['user-information']);
+    }); 
           return;          
         }else{
           alert("New Passowrd does not match!");
@@ -264,6 +267,9 @@ export class UserInformationComponent implements OnInit {
         this.userService.setUser();
         localStorage.setItem('user', JSON.stringify(this.user));   // store object
         this.modalService.dismissAll();
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.router.navigate(['user-information']);
+        }); 
         return;          
       }
       else{
