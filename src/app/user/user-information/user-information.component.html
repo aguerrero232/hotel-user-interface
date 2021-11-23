@@ -225,7 +225,7 @@
 
       <div class="card bg-dark" id="modal-card">
 
-        <form #myform="ngForm" (ngSubmit)="onSubmitUpdateRes(myform)">
+        <form #myform="ngForm" (ngSubmit)="updateReservation(myform)">
 
           <div class="form-check" id="bigBoiCheck">
             <label for="room" class="form-label" onmousedown="return false" onselectstart="return false">Rooms</label>
@@ -266,7 +266,6 @@
           </div>
           <!-- end date picker -->
 
-
           <span style='float:right;'>
             <button type="button" class="btn btn-secondary" type="submit">Update</button>
           </span>
@@ -278,7 +277,7 @@
 
     <div class="modal-footer bg-dark">
       <span>
-        <button type="button" class="btn btn-secondary" (click)="delete_res()" type="submit">Cancel
+        <button type="button" class="btn btn-secondary" (click)="deleteReservation()" type="submit">Cancel
           Reservation</button>
       </span>
 

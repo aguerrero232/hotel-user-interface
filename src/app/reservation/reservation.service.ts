@@ -99,7 +99,11 @@ export class ReservationService {
 
     let endpoint = "https://hotel-system-api.herokuapp.com/reservations/"+ updatedReservation.id;
     
-    return this.http.put(endpoint, body );
+    return this.http.put(endpoint, body).then(data => {
+      let value = JSON.parse(JSON.stringify(data));
+      console.log(value);
+    });
+  
   }
 
 }

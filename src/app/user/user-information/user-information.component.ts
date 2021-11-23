@@ -105,9 +105,9 @@ export class UserInformationComponent implements OnInit {
     this.user_reservations = filtered;
   }
 
-  async delete_res(){
+  deleteReservation(){
     
-    let x = await this.reservationService.deleteReservation(this.selected_res.res.id);
+    this.reservationService.deleteReservation(this.selected_res.res.id);
     
     // updating the number of the hotel rooms available
     let c_hotel = this.selected_res.hotel;    
@@ -128,11 +128,6 @@ export class UserInformationComponent implements OnInit {
         break;
     }
 
-    // this.userService.user = this.user;
-    // this.userService.updateUser(this.user);
-    // this.userService.setUsers();
-    // this.userService.setUser();
-    
     c_hotel.rooms[roomType].numRoomsAvailable += 1;
     
     this.hotelService.updateHotel(c_hotel);
@@ -146,7 +141,7 @@ export class UserInformationComponent implements OnInit {
     }); 
   }
 
- updateToAdmin(form: NgForm) {
+  updateToAdmin(form: NgForm) {
     this.users = this.userService.getUsers();
     let htl: Hotel[] = [];
     let res: Reservation[] = [];
@@ -231,9 +226,6 @@ export class UserInformationComponent implements OnInit {
           this.userService.setUser();
           this.modalService.dismissAll();
           localStorage.setItem('user', JSON.stringify(this.user));   // store object
-              this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['user-information']);
-    }); 
           return;          
         }else{
           alert("New Passowrd does not match!");
@@ -284,34 +276,33 @@ export class UserInformationComponent implements OnInit {
 
   }
 
-  async onSubmitUpdateRes(form: NgForm){
+  updateReservation(form: NgForm){
     
     let c_hotel = this.selected_res.hotel;
     let c_res = this.selected_res.res;
+
     let f_room: any;
     let roomName = form.value.room;
-    
-    let day = new Date().getDay();
     
     if(roomName === ""){
       alert("Room type not selected! Please select room type and doube check dates!");
       return;
     }
     if(c_res.roomName != roomName){
+      
       for(let i = 0; i < c_hotel.rooms.length; i++){      
         if(c_hotel.rooms[i].name == roomName){
-          if(c_hotel.rooms[i].numRoomsAvailable > 0){
-            //  updating count of reservations allowed to selected room -1
-            c_hotel.rooms[i].numRoomsAvailable -= 1;  
+          c_hotel.rooms[i].numRoomsAvailable -= 1;  
             f_room = c_hotel.rooms[i];
-          }
         }
         else if(c_res.room.name == c_hotel.rooms[i].name){
           // updating count of the room the user changed from +1 
           c_hotel.rooms[i].numRoomsAvailable += 1;  
         }
       }
+
       this.hotelService.updateHotel(c_hotel);
+      this.hotelService.setHotels();
     }
     else{
       let roomType = 0;
@@ -334,28 +325,40 @@ export class UserInformationComponent implements OnInit {
       }
       f_room = c_hotel.rooms[roomType];
     }
+    
     // error checking weekend diff for 0
     let wd = ( c_hotel.weekendDiff > 0) ? c_hotel.weekendDiff : 0; 
     
     c_res.room.name = f_room.name;
     c_res.room.price = f_room.price;
+
     c_res.start = (this.fromDate?.month + "/" + this.fromDate?.day + "/" + this.fromDate?.year);
+    
     c_res.end =  (this.toDate == undefined ) ? c_res.start : (this.toDate?.month + "/" + this.toDate?.day + "/"+ this.toDate?.year );
     
+    console.log(c_res.start);
+    console.log(c_res.end);
+    
+
+
     let daysbooked = (c_res.start == c_res.end) ? 1 : this.dayDiff(new Date(c_res.start), new Date(c_res.end));
     
-    let weekend_count = this.weekendCount(new Date(this.reservation.start), new Date(this.reservation.end), daysbooked);
+    let weekend_count = this.weekendCount(new Date(c_res.start), new Date(c_res.end), daysbooked);
     
     let final_price =  (f_room.price * (daysbooked - weekend_count) + ( f_room.price * weekend_count + ( f_room.price * weekend_count * ((wd > 0) ? wd/100 : 1)))).toFixed(2);
 
     c_res.price = Number(final_price);
 
-    c_res = await this.reservationService.updateReservation(c_res);
+    this.reservationService.updateReservation(c_res);
+    
     this.reservationService.setReservations();
+    
     this.modalService.dismissAll();
+
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['user-information']);
-    }); 
+    });
+
   }
 
   dayDiff(firstDate: Date, secondDate: Date) {
