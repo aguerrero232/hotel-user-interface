@@ -33,7 +33,6 @@
     <!-- checking if the user is an admin, if they are get sent to elseBlock4 -->
     <div *ngIf="user.isAdmin === 0; else elseBlock4">
       <!-- regular user account -->
-
       <div *ngIf="getReservations()"></div>
 
       <div class='card bg-dark' id='usrpage'>
@@ -214,7 +213,6 @@
 
   <!-- update reservation modal -->
   <ng-template #content3 let-modal>
-
     <div class="modal-header bg-dark">
       <h4 class="modal-title text-white">Update Reservation.</h4>
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"

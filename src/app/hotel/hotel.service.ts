@@ -25,7 +25,7 @@ export class HotelService {
     this.hotels = [];
     
     let endpoint = "https://hotel-system-api.herokuapp.com/hotels";
-    this.http.get(endpoint).then(data => {
+    await this.http.get(endpoint).then(data => {
       
       let v = JSON.parse(JSON.stringify(data));
       
@@ -86,7 +86,7 @@ export class HotelService {
       "weekendDiff": hotel.weekendDiff
     }
     
-    return this.http.post(endpoint, body);
+    return await this.http.post(endpoint, body);
   }
 
   async updateHotel(updatedHotel: Hotel){
@@ -102,12 +102,12 @@ export class HotelService {
 
     let endpoint = "https://hotel-system-api.herokuapp.com/hotels/"+ updatedHotel.id;
     
-    return this.http.put(endpoint, body);
+    return await this.http.put(endpoint, body);
   }
 
   async deleteHotel(id: string){
     let endpoint = "https://hotel-system-api.herokuapp.com/hotels/"+ id;
-    return this.http.delete(endpoint);
+    return await this.http.delete(endpoint);
   }
 
 

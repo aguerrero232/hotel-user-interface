@@ -19,12 +19,12 @@ export class ReservationService {
     this.reservationsSub.subscribe(r => this.reservations = r);
   }
 
- setReservations(){
+ async setReservations(){
 
     this.reservations = [];
     let endpoint = "https://hotel-system-api.herokuapp.com/reservations";
     
-    this.http.get(endpoint).then(data => {
+    await this.http.get(endpoint).then(data => {
       let values = JSON.parse(JSON.stringify(data))
       values.forEach( ( value: any) => {
         let r = new Reservation(value._id, value._hotelID, value._userID, value.room, value.start, value.end, value.price);
@@ -73,7 +73,7 @@ export class ReservationService {
       "price": reservation.price
     }
 
-    return this.http.post(endpoint, body).then(data => {
+    return await this.http.post(endpoint, body).then(data => {
       let value = JSON.parse(JSON.stringify(data));
       reservation.id = value._id;
       return reservation;
@@ -83,7 +83,11 @@ export class ReservationService {
 
   async deleteReservation(id: string){
     let endpoint = "https://hotel-system-api.herokuapp.com/reservations/"+ id;
-    return this.http.delete(endpoint);
+
+    return await this.http.delete(endpoint).then(data => {
+      let value = JSON.parse(JSON.stringify(data));
+      console.log(value);
+    });
   }
 
   async updateReservation(updatedReservation: Reservation){
@@ -99,7 +103,7 @@ export class ReservationService {
 
     let endpoint = "https://hotel-system-api.herokuapp.com/reservations/"+ updatedReservation.id;
     
-    return this.http.put(endpoint, body).then(data => {
+    return await this.http.put(endpoint, body).then(data => {
       let value = JSON.parse(JSON.stringify(data));
       console.log(value);
     });

@@ -29,6 +29,7 @@ export class UserInformationComponent implements OnInit {
   
   selected_res: any; 
   reservations: Reservation[] = [];
+
   user_reservations = new Array(); 
   
   hotels: Hotel[] = []
@@ -71,27 +72,13 @@ export class UserInformationComponent implements OnInit {
   }
 
   getReservations(){
-    let res: Reservation[] = [];
-    let htl: Hotel[] = [];
+    
+    this.user_reservations = new Array();    
     let user_res_hotel_filt: { res: Reservation; hotel: Hotel; }[] = [];
     let filtered: { res: Reservation; hotel: Hotel; }[] = [];    
-    // async causeing dups so filtering for uniques
-    this.reservations.forEach( x => {
-      if(!res.some(y => JSON.stringify(y) === JSON.stringify(x))){
-        res.push(x)
-      }
-    });
-        
-    this.hotels.forEach( x => {
-      if(!htl.some(y => JSON.stringify(y) === JSON.stringify(x))){
-        htl.push(x)
-      }
-    });
-
     let user_reservations_filt = this.reservations.filter( r => r._userId == this.user.id);
-
     user_reservations_filt.forEach( r => {
-      let h = htl.find(f => f.id == r._hotelId);
+      let h = this.hotels.find(f => f.id == r._hotelId);
       if(h != undefined)
         user_res_hotel_filt.push({res: r, hotel: h});
     });
@@ -107,10 +94,13 @@ export class UserInformationComponent implements OnInit {
 
   deleteReservation(){
     
+    this.modalService.dismissAll();
+
     this.reservationService.deleteReservation(this.selected_res.res.id);
-    
+
     // updating the number of the hotel rooms available
     let c_hotel = this.selected_res.hotel;    
+    
     let roomType = 0;
     
     switch (this.selected_res.res.room.name){
@@ -131,14 +121,16 @@ export class UserInformationComponent implements OnInit {
     c_hotel.rooms[roomType].numRoomsAvailable += 1;
     
     this.hotelService.updateHotel(c_hotel);
-    this.hotelService.setHotels();
-    this.modalService.dismissAll();
+    this.hotelService.setHotels(); 
     
-    localStorage.setItem('user', JSON.stringify(this.user)); 
+    this.reservationService.setReservations();
     
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+    this.getReservations();
+
+    this.router.navigateByUrl('/').then(() => {
       this.router.navigate(['user-information']);
-    }); 
+    });
+
   }
 
   updateToAdmin(form: NgForm) {
@@ -335,11 +327,6 @@ export class UserInformationComponent implements OnInit {
     c_res.start = (this.fromDate?.month + "/" + this.fromDate?.day + "/" + this.fromDate?.year);
     
     c_res.end =  (this.toDate == undefined ) ? c_res.start : (this.toDate?.month + "/" + this.toDate?.day + "/"+ this.toDate?.year );
-    
-    console.log(c_res.start);
-    console.log(c_res.end);
-    
-
 
     let daysbooked = (c_res.start == c_res.end) ? 1 : this.dayDiff(new Date(c_res.start), new Date(c_res.end));
     

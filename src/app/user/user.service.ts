@@ -23,7 +23,7 @@ export class UserService {
     this.users = [];
     
     let endpoint = "https://hotel-system-api.herokuapp.com/users";
-    this.http.get(endpoint).then(data => {
+    await this.http.get(endpoint).then(data => {
       let values = JSON.parse(JSON.stringify(data))
       values.forEach( ( value: any) => {
         let u = new User(value._id, value.email, value.password, value.name, value.isAdmin);
@@ -62,7 +62,7 @@ export class UserService {
       "isAdmin": user.isAdmin 
     }
 
-    return this.http.post(endpoint, body).then(data => {
+    return await this.http.post(endpoint, body).then(data => {
       let value = JSON.parse(JSON.stringify(data));
       user.id = value._id;
       return user;
@@ -70,7 +70,7 @@ export class UserService {
     );
   }
 
-  updateUser(updatedUser: User){
+  async updateUser(updatedUser: User){
 
     let endpoint = "https://hotel-system-api.herokuapp.com/users/"+ updatedUser.id;
     
@@ -81,7 +81,7 @@ export class UserService {
       "isAdmin": updatedUser.isAdmin 
     }
 
-    return this.http.put(endpoint, body );
+    return await this.http.put(endpoint, body );
   }
 
   onUserChange(): Observable<any> {
