@@ -65,7 +65,7 @@ export class NewUserPageComponent implements OnInit {
       this.userService.setUsers();
       this.user = user;
       this.userService.user = this.user;
-      this.userService.setUser();
+      await this.userService.setUser();
       localStorage.setItem('user', JSON.stringify(this.user));   // store object
       this.router.navigate(['user-information']);  
     }

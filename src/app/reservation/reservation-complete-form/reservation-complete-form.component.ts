@@ -107,9 +107,10 @@ export class ReservationCompleteFormComponent implements OnInit {
 
     this.reservation = await this.reservationService.addReservation(this.reservation);
     this.reservationService.reservation = this.reservation;
-    this.reservationService.setReservations();
-    this.reservationService.setReservation();
-    this.hotelService.updateHotel(this.hotel);
+    
+    await this.reservationService.setReservations();
+    await this.reservationService.setReservation();
+    await this.hotelService.updateHotel(this.hotel);
 
     this.router.navigate(['user-information']);
   }

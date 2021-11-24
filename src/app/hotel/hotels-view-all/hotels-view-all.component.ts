@@ -47,10 +47,10 @@ export class HotelsViewAllComponent implements OnInit {
 
   }
 
-  reserveSelectedHotel(){
+  async reserveSelectedHotel(){
     this.modalService.dismissAll();
     this.hotelService.hotel = this.hotel;
-    this.hotelService.setHotel();
+    await this.hotelService.setHotel();
     this.router.navigate(["/reservation-complete"]);
   } 
 

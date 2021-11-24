@@ -29,7 +29,6 @@ export class UserInformationComponent implements OnInit {
   
   selected_res: any; 
   reservations: Reservation[] = [];
-
   user_reservations = new Array(); 
   
   hotels: Hotel[] = []
@@ -47,11 +46,18 @@ export class UserInformationComponent implements OnInit {
   }
 
   ngOnInit(){
+ 
+    this.selected_res= [] 
+    this.reservations = [];
+    this.user_reservations = []; 
+
     this.reservationService.setReservations();
-    this.reservations =  this.reservationService.reservations;
+
+    this.reservations =  this.reservationService.reservations;    
     this.hotels = this.hotelService.hotels;
     this.user = this.userService.user;
     this.users = this.userService.users;
+  
   }
 
   ngOnDestroy(){
@@ -71,69 +77,7 @@ export class UserInformationComponent implements OnInit {
     this.modalService.open(content3) 
   }
 
-  getReservations(){
-    
-    this.user_reservations = new Array();    
-    let user_res_hotel_filt: { res: Reservation; hotel: Hotel; }[] = [];
-    let filtered: { res: Reservation; hotel: Hotel; }[] = [];    
-    let user_reservations_filt = this.reservations.filter( r => r._userId == this.user.id);
-    user_reservations_filt.forEach( r => {
-      let h = this.hotels.find(f => f.id == r._hotelId);
-      if(h != undefined)
-        user_res_hotel_filt.push({res: r, hotel: h});
-    });
-    
-    user_res_hotel_filt.forEach( x => {
-      if(!filtered.some(y => JSON.stringify(y) === JSON.stringify(x))){
-        filtered.push(x)
-      }
-    });
-
-    this.user_reservations = filtered;
-  }
-
-  deleteReservation(){
-    
-    this.modalService.dismissAll();
-
-    this.reservationService.deleteReservation(this.selected_res.res.id);
-
-    // updating the number of the hotel rooms available
-    let c_hotel = this.selected_res.hotel;    
-    
-    let roomType = 0;
-    
-    switch (this.selected_res.res.room.name){
-      case 'Standard':
-        roomType = 0;
-        break;
-      case 'Queen':
-        roomType = 1;
-        break;
-      case 'King':
-        roomType = 2;
-        break;
-      default:
-        roomType = 0;
-        break;
-    }
-
-    c_hotel.rooms[roomType].numRoomsAvailable += 1;
-    
-    this.hotelService.updateHotel(c_hotel);
-    this.hotelService.setHotels(); 
-    
-    this.reservationService.setReservations();
-    
-    this.getReservations();
-
-    this.router.navigateByUrl('/').then(() => {
-      this.router.navigate(['user-information']);
-    });
-
-  }
-
-  updateToAdmin(form: NgForm) {
+  async updateToAdmin(form: NgForm) {
     this.users = this.userService.getUsers();
     let htl: Hotel[] = [];
     let res: Reservation[] = [];
@@ -159,7 +103,7 @@ export class UserInformationComponent implements OnInit {
         u_user.isAdmin = 1;
     
         let user_reservations_filt = this.reservations.filter( r => r._userId == this.user.id);
-        user_reservations_filt.forEach( r => {
+        user_reservations_filt.forEach( async r => {
         let h = htl.find(f => f.id == r._hotelId);
         
         if(h != undefined){
@@ -180,12 +124,12 @@ export class UserInformationComponent implements OnInit {
                 console.log("Invalid hotel room");
               break;
             }
-          this.hotelService.updateHotel(h);
+          await this.hotelService.updateHotel(h);
         }
       });
-        this.hotelService.setHotels();
-        this.userService.updateUser(u_user);
-        this.userService.setUsers();
+        await this.hotelService.setHotels();
+        await this.userService.updateUser(u_user);
+        await this.userService.setUsers();
         this.modalService.dismissAll();
         return;
       }
@@ -200,7 +144,7 @@ export class UserInformationComponent implements OnInit {
     }
   }
 
-  updatePassword(form: NgForm){    
+  async updatePassword(form: NgForm){    
     this.users = this.userService.getUsers();
     
     let password = form.value.password;
@@ -214,8 +158,8 @@ export class UserInformationComponent implements OnInit {
           let new_hashed_p = this.hashService.set(newPassword);
           this.user.password = new_hashed_p;
           this.userService.user = this.user;
-          this.userService.updateUser(this.user);
-          this.userService.setUser();
+          await this.userService.updateUser(this.user);
+          await this.userService.setUser();
           this.modalService.dismissAll();
           localStorage.setItem('user', JSON.stringify(this.user));   // store object
           return;          
@@ -235,7 +179,7 @@ export class UserInformationComponent implements OnInit {
     }
   }
  
-  updateEmail(form: NgForm){
+  async updateEmail(form: NgForm){
     
     this.users = this.userService.getUsers();
     
@@ -247,8 +191,8 @@ export class UserInformationComponent implements OnInit {
       if(this.hashService.get(this.user.password) === password){
         this.user.email = newEmail;
         this.userService.user = this.user;
-        this.userService.updateUser(this.user);
-        this.userService.setUser();
+        await this.userService.updateUser(this.user);
+        await this.userService.setUser();
         localStorage.setItem('user', JSON.stringify(this.user));   // store object
         this.modalService.dismissAll();
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
@@ -267,8 +211,81 @@ export class UserInformationComponent implements OnInit {
     }
 
   }
+  
+  getReservations(){
+    this.reservations =  this.reservationService.reservations;   
+    let res: Reservation[] = [];
+    let htl: Hotel[] = [];
+    let user_res_hotel_filt: { res: Reservation; hotel: Hotel; }[] = [];
+    let filtered: { res: Reservation; hotel: Hotel; }[] = [];    
 
-  updateReservation(form: NgForm){
+    // async causeing dups so filtering for uniques
+    this.reservations.forEach( x => {
+      if(!res.some(y => JSON.stringify(y) === JSON.stringify(x))){
+        res.push(x)
+      }
+    });
+        
+    this.hotels.forEach( x => {
+      if(!htl.some(y => JSON.stringify(y) === JSON.stringify(x))){
+        htl.push(x)
+      }
+    });
+
+    let user_reservations_filt = res.filter( r => r._userId == this.user.id);
+    user_reservations_filt.forEach( r => {
+      let h = htl.find(f => f.id == r._hotelId);
+      if(h != undefined)
+        user_res_hotel_filt.push({res: r, hotel: h});
+    });
+    
+    user_res_hotel_filt.forEach( x => {
+      if(!filtered.some(y => JSON.stringify(y) === JSON.stringify(x))){
+        filtered.push(x)
+      }
+    });
+
+    this.user_reservations = filtered;
+  }
+
+  async deleteReservation(){
+    // updating the number of the hotel rooms available
+    let c_hotel = this.selected_res.hotel;    
+    
+    let roomType = 0;
+    switch (this.selected_res.res.room.name){
+      case 'Standard':
+        roomType = 0;
+        break;
+      case 'Queen':
+        roomType = 1;
+        break;
+      case 'King':
+        roomType = 2;
+        break;
+      default:
+        roomType = 0;
+        break;
+    }
+
+    c_hotel.rooms[roomType].numRoomsAvailable += 1;
+    
+    this.hotelService.updateHotel(c_hotel);
+    this.hotelService.setHotels(); 
+    let x = await this.reservationService.deleteReservation(this.selected_res.res.id);
+    this.reservationService.setReservations();
+    this.reservations =  this.reservationService.getReservations();  
+    this.modalService.dismissAll();
+    // location.reload();
+    
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['user-information']);
+    });
+    
+    // location.reload();
+  }
+
+  async updateReservation(form: NgForm){
     
     let c_hotel = this.selected_res.hotel;
     let c_res = this.selected_res.res;
@@ -293,8 +310,8 @@ export class UserInformationComponent implements OnInit {
         }
       }
 
-      this.hotelService.updateHotel(c_hotel);
-      this.hotelService.setHotels();
+      await this.hotelService.updateHotel(c_hotel);
+      await this.hotelService.setHotels();
     }
     else{
       let roomType = 0;
@@ -336,9 +353,9 @@ export class UserInformationComponent implements OnInit {
 
     c_res.price = Number(final_price);
 
-    this.reservationService.updateReservation(c_res);
+    await this.reservationService.updateReservation(c_res);
     
-    this.reservationService.setReservations();
+    await this.reservationService.setReservations();
     
     this.modalService.dismissAll();
 

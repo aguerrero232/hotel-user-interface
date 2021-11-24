@@ -64,7 +64,7 @@ export class AdminHotelsViewComponent implements OnInit {
     }); 
   } 
   
-  validateFormInputsUpdateHotel(form: NgForm){
+  async validateFormInputsUpdateHotel(form: NgForm){
 
     let amenities = ['Gym', 'Spa', 'Pool', 'Business Office', 'WiFi'];
     let id = this.hotel.id;
@@ -113,8 +113,8 @@ export class AdminHotelsViewComponent implements OnInit {
 
     let hotel = new Hotel(id, this.user.id,name, selectedAmenities, numRooms, rooms, this.hotel.picture, weekendDiff);
 
-    this.hotelService.updateHotel(hotel);    
-    this.hotelService.setHotels();
+    await this.hotelService.updateHotel(hotel);    
+    await this.hotelService.setHotels();
     this.modalService.dismissAll();
     
     // refreshesh the component 

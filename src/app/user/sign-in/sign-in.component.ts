@@ -31,7 +31,7 @@ export class SignInComponent implements OnInit {
     this.usersSub.unsubscribe();
   }
 
-  checkData(form: NgForm){
+  async checkData(form: NgForm){
     this.users = this.userService.getUsers();
     let email = form.value.email;
     let password = form.value.password;
@@ -39,7 +39,7 @@ export class SignInComponent implements OnInit {
     if(matched_emails_and_password){
       this.user = matched_emails_and_password;
       this.userService.user = this.user;
-      this.userService.setUser();
+      await this.userService.setUser();
       localStorage.setItem('user', JSON.stringify(this.user));   // store object
       this.router.navigate(['/user-information/']);
       return;

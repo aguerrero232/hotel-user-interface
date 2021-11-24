@@ -38,29 +38,35 @@
       <div class='card bg-dark' id='usrpage'>
         <p>Current Reservations</p>
         <div class="table-responsive">
-          <table class="table table-sm table-striped table-bordered table-hover table-dark" style="text-align: center;">
-            <thead>
-              <tr>
-                <th scope="col">Hotel</th>
-                <th scope="col">Room</th>
-                <th scope="col">Price</th>
-                <th scope="col">Start</th>
-                <th scope="col">End</th>
-                <th scope="col">Update</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let res_data of user_reservations">
-                <th scope="row">{{res_data.hotel.name}} </th>
-                <td>{{res_data.res.room.name}}</td>
-                <td>${{res_data.res.price.toFixed(2)}}</td>
-                <td>{{res_data.res.start}}</td>
-                <td>{{res_data.res.end}}</td>
-                <td> <button class='btn' (click)="openUpdateRes(content3, res_data)">
-                    &#9757;</button> </td>
-              </tr>
-            </tbody>
-          </table>
+          <span *ngIf='user_reservations.length > 0'>
+
+            <table class="table table-sm table-striped table-bordered table-hover table-dark"
+              style="text-align: center;">
+              <thead>
+                <tr>
+                  <th scope="col">Hotel</th>
+                  <th scope="col">Room</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Start</th>
+                  <th scope="col">End</th>
+                  <th scope="col">Update</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                <tr *ngFor="let res_data of user_reservations">
+                  <th scope="row">{{res_data.hotel.name}} </th>
+                  <td>{{res_data.res.room.name}}</td>
+                  <td>${{res_data.res.price.toFixed(2)}}</td>
+                  <td>{{res_data.res.start}}</td>
+                  <td>{{res_data.res.end}}</td>
+                  <td> <button class='btn' (click)="openUpdateRes(content3, res_data)">
+                      &#9757;</button> </td>
+                </tr>
+              </tbody>
+            </table>
+          </span>
+
         </div>
       </div>
 

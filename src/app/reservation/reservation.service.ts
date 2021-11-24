@@ -83,11 +83,7 @@ export class ReservationService {
 
   async deleteReservation(id: string){
     let endpoint = "https://hotel-system-api.herokuapp.com/reservations/"+ id;
-
-    return await this.http.delete(endpoint).then(data => {
-      let value = JSON.parse(JSON.stringify(data));
-      console.log(value);
-    });
+    return await this.http.delete(endpoint);
   }
 
   async updateReservation(updatedReservation: Reservation){
@@ -103,10 +99,7 @@ export class ReservationService {
 
     let endpoint = "https://hotel-system-api.herokuapp.com/reservations/"+ updatedReservation.id;
     
-    return await this.http.put(endpoint, body).then(data => {
-      let value = JSON.parse(JSON.stringify(data));
-      console.log(value);
-    });
+    return await this.http.put(endpoint, body);
   
   }
 

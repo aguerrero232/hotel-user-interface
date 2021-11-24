@@ -45,7 +45,7 @@ export class PostListingComponent implements OnInit {
     this.hotelsSub.unsubscribe();
   }
 
-  validateFormInputs(form: NgForm){
+  async validateFormInputs(form: NgForm){
     
     let name = form.value.name;
     let numRooms = form.value.numroomt;
@@ -82,8 +82,8 @@ export class PostListingComponent implements OnInit {
 
     let hotel: Hotel = new Hotel ( "", this.user.id,name, selectedAmenities, numRooms, rooms, 0, weekendDiff);
 
-    this.hotelService.addHotel(hotel);    
-    this.hotelService.setHotels();
+    await this.hotelService.addHotel(hotel);    
+    await this.hotelService.setHotels();
 
     this.router.navigate(['/']);    
   }
