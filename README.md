@@ -20,4 +20,4 @@ DEVOPS: CICD with heroku for the api and firebase for the front end
 
 ## Site Link
 
-[](https://hotel-reservation-se-site-2021.web.app/)
+[Click here to check it out!)](https://hotel-reservation-se-site-2021.web.app/)
