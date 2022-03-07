@@ -4,11 +4,11 @@
 
 
 ## Contributors
- * Ariel Guerrero < Lead Developer >
+ * Ariel Guerrero **Lead Developer**
  * Darean Wilde
  * Reed Olm
  * Daniel Castro
- * Gabriella Mariello < Project Manager >
+ * Gabriella Mariello **Project Manager**
 
 
 
