@@ -1,12 +1,6 @@
 # SE-Hotel-Reservation-Application
-
-Front End: Angular, Bootstrap
-
-Back End: RESTfull API using node.js, express.js for handling requests 
-
-DB: Mongo DB
-
-DEVOPS: CICD with heroku for the api and firebase for the front end
+* FRONT END: Angular, Bootstrap
+* DEVOPS: CICD firebase
 
 
 ## Contributors
