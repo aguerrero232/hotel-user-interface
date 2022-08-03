@@ -1,9 +1,16 @@
 
 # SE-Hotel-Reservation-Application
 
-* Angular, Bootstrap, firebase, GitHub CI/CD
+* Tech Stack
+  * Angular
+  * Bootstrap
+  * firebase
+  * GitHub CI/CD
+  * MongoDB
+  * Express
+  * NodeJS
 
-* [Site Link](https://hotel-reservation-se-site-2021.web.app/)
+## [Site Link](https://hotel-reservation-se-site-2021.web.app/)
 
 
 ## Contributors
@@ -12,3 +19,7 @@
  * Reed Olm
  * Daniel Castro
  * Gabriella Mariello **Project Manager**
+
+## Description
+
+Full stack hotel reservation system
