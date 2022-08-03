@@ -1,4 +1,7 @@
 
+## [Site Link](https://hotel-reservation-se-site-2021.web.app/)
+
+
 # SE-Hotel-Reservation-Application
 
 * Tech Stack
@@ -9,10 +12,7 @@
   * MongoDB
   * Express
   * NodeJS
-
-## [Site Link](https://hotel-reservation-se-site-2021.web.app/)
-
-
+  
 ## Contributors
  * Ariel Guerrero **Lead Developer**
  * Darean Wilde
