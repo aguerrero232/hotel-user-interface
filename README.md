@@ -3,7 +3,7 @@
 
 * Angular, Bootstrap, firebase, GitHub CI/CD
 
-[Site Link](https://hotel-reservation-se-site-2021.web.app/)
+* [Site Link](https://hotel-reservation-se-site-2021.web.app/)
 
 
 ## Contributors
